@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30626.31
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FutbotReact1", "FutbotReact1.csproj", "{602EDDD7-5272-4CFA-AA7A-371F07514CBF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{602EDDD7-5272-4CFA-AA7A-371F07514CBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{602EDDD7-5272-4CFA-AA7A-371F07514CBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{602EDDD7-5272-4CFA-AA7A-371F07514CBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{602EDDD7-5272-4CFA-AA7A-371F07514CBF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DC3888A0-AC3E-4278-BBD0-AAE11FFA094F}
+	EndGlobalSection
+EndGlobal
