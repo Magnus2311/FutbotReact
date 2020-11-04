@@ -4,5 +4,6 @@ namespace FutbotReact.Helpers
     {
         public const string Users = "users";
         public const string Errors = "errors";
+        public const string Logins = "logins";
     }
 }

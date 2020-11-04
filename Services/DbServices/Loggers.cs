@@ -8,14 +8,19 @@ namespace FutbotReact.Services.DbServices
 {
     public class LoggerDbService : BaseDbService
     {
-        private readonly IMongoCollection<Error> _collection;
+        private readonly IMongoCollection<Error> _errors;
+        private readonly IMongoCollection<Error> _logins;
 
         public LoggerDbService()
         {
-            _collection = _db.GetCollection<Error>(DatabaseCollections.Errors);
+            _errors = _db.GetCollection<Error>(DatabaseCollections.Errors);
+            _logins = _db.GetCollection<Login>(DatabaseCollections.Logins);
         }
 
         public async Task Log(Exception ex)
-            => await _collection.InsertOneAsync(new Error(ex));
+            => await _errors.InsertOneAsync(new Error(ex));
+
+        public async Task Log(User user)
+            => await _logins.InsertOneAsync(new Login(user));
     }
 }
