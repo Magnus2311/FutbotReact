@@ -1,3 +1,5 @@
+import { Action } from 'redux';
+import { ThunkAction } from 'redux-thunk';
 import * as Counter from './Counter';
 import * as User from './User';
 
@@ -11,6 +13,5 @@ export const reducers = {
     user: User.reducer
 };
 
-export interface AppThunkAction<TAction> {
-    (dispatch: (action: TAction) => void, getState: () => ApplicationState): void;
-}
+export type AppThunk<ReturnType, ActionType> =
+    ThunkAction<ReturnType, ApplicationState, null, Action<ActionType>>

@@ -1,7 +1,7 @@
 import { User } from "../../interfaces/Models";
 
 export function add(user: User): void {
-    var response = fetch("api/users", {
+    var response = fetch("api/users/add", {
         method: "POST",
         mode: "cors",
         cache: "no-cache",

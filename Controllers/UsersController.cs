@@ -10,10 +10,10 @@ namespace FutbotReact.Controllers
     public class UsersController : ControllerBase
     {
         private readonly UsersDbService _dbService;
-        private readonly Logger _logger;
+        private readonly LoggerDbService _logger;
 
-        public UsersController(UsersDbService dbService
-            Logger logger)
+        public UsersController(UsersDbService dbService,
+            LoggerDbService logger)
         {
             _dbService = dbService;
             _logger = logger;
@@ -21,16 +21,16 @@ namespace FutbotReact.Controllers
 
         public string Get() => "Opa opa";
 
-        [HttpPost]
+        [HttpPost("add")]
         public async Task Add(User user)
             => await _dbService.Add(user);
 
-        [HttpDelete]
+        [HttpDelete("delete")]
         public async Task Delete(string username)
             => await _dbService.Delete(username);
 
-        [HttpPost]
-        public async Task Login(User user) 
-            => await _logger.Log(user);
+        [HttpPost("login")]
+        public async Task<bool> Login(User user)
+            => await _dbService.Login(user);
     }
 }
