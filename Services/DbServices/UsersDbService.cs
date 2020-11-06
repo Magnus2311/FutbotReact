@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 using FutbotReact.Helpers;
-using FutbotReact.Models;
+using FutbotReact.Models.Auth;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
 using utbotReact.Services;
@@ -21,7 +21,6 @@ namespace FutbotReact.Services.DbServices
             _logger = logger;
         }
 
-        [Route("Add")]
         public async Task Add(User user)
         {
             user.Username = user.Username.ToUpper();
@@ -32,13 +31,21 @@ namespace FutbotReact.Services.DbServices
         public async Task Delete(string username)
             => await _collection.DeleteOneAsync(u => u.Username == username.ToUpper());
 
-        [Route("Login")]
         public async Task<bool> Login(User user)
         {
-            var dbUser = await (await _collection.FindAsync<User>(u => u.Username == user.Username.ToUpper())).FirstOrDefaultAsync(); ;
+            var dbUser = await (await _collection.FindAsync<User>(u => u.Username == user.Username.ToUpper())).FirstOrDefaultAsync();
             var isSuccessful = _hasher.VerifyPassword(dbUser.Password, user.Password);
             await _logger.Log(user, isSuccessful);
             return isSuccessful;
         }
+
+        public async Task<User> FindByUsernameAsync(string username)
+            => await (await _collection.FindAsync<User>(u => u.Username == username.ToUpper())).FirstOrDefaultAsync();
+
+        public async Task UpdateRefreshToken(User user)
+            => await _collection.UpdateOneAsync(
+                Builders<User>.Filter.Eq(u => u.Username, user.Username),
+                Builders<User>.Update.Set(u => u.RefreshToken, user.RefreshToken)
+            );
     }
 }

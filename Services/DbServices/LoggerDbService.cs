@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using FutbotReact.Helpers;
 using FutbotReact.Models;
+using FutbotReact.Models.Auth;
 using MongoDB.Driver;
 
 namespace FutbotReact.Services.DbServices

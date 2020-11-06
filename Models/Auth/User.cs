@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace FutbotReact.Models
+namespace FutbotReact.Models.Auth
 {
     public class User
     {
@@ -20,5 +21,7 @@ namespace FutbotReact.Models
         public DateTime CreatedDate { get; set; }
         [BsonElement("eaAccounts")]
         public List<EaAccount> EaAccounts { get; set; } = new List<EaAccount>();
+        [BsonElement("refreshToken")]
+        public RefreshToken RefreshToken { get; set; }
     }
 }
