@@ -1,7 +1,8 @@
 import { Action, Reducer } from 'redux';
 import { AppThunk, } from '.';
-import { User } from '../interfaces/Models';
+import { LoginResponse, User } from '../interfaces/Models';
 import { toast } from "react-toastify";
+import { login } from "../services/db/usersDbService";
 
 export interface UserState {
     isLoginSuccessful: boolean,
@@ -31,27 +32,17 @@ export const actionCreators = {
     login: (user: User): AppThunk<Promise<boolean>, KnownAction> => {
         return async (dispatch): Promise<boolean> => {
             if (user) {
-                return fetch(`api/users/login`, {
-                    method: "POST",
-                    mode: "cors",
-                    cache: "no-cache",
-                    credentials: "same-origin",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(user)
-                }).then(response => response.json() as Promise<boolean>)
-                    .then((isSuccessful): boolean => {
-                        if (isSuccessful) {
-                            toast.success("You've logged in successfully!");
-                            dispatch<any>(loginSucceeded(user))
-                        }
-                        else {
-                            toast.error("Login failed! Check your credentials!");
-                            dispatch<any>(loginFailed());
-                        }
-                        return isSuccessful;
-                    });
+                return login(user).then((loginResponse: LoginResponse): boolean => {
+                    if (loginResponse.isSuccessful) {
+                        toast.success("You've logged in successfully!");
+                        dispatch<any>(loginSucceeded(user))
+                    }
+                    else {
+                        toast.error("Login failed! Check your credentials!");
+                        dispatch<any>(loginFailed());
+                    }
+                    return loginResponse.isSuccessful;
+                });
             } else return false;
         };
     }

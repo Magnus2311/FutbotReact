@@ -1,4 +1,4 @@
-import { User } from "../../interfaces/Models";
+import { LoginResponse, User } from "../../interfaces/Models";
 
 export function add(user: User): void {
     var response = fetch("api/users/add", {
@@ -13,8 +13,8 @@ export function add(user: User): void {
     });
 }
 
-export function login(user: User): void {
-    var response = fetch("api/users/login", {
+export function login(user: User): Promise<LoginResponse> {
+    return fetch("api/users/login", {
         method: "POST",
         mode: "cors",
         cache: "no-cache",
@@ -23,5 +23,5 @@ export function login(user: User): void {
             "Content-Type": "application/json"
         },
         body: JSON.stringify(user)
-    })
+    }).then((response: Response) => response.json()).then((loginResponse: LoginResponse) => loginResponse);
 }

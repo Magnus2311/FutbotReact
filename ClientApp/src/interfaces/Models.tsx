@@ -11,7 +11,20 @@ interface EaAccount {
     password: string
 }
 
+interface LoginResponse {
+    isSuccessful: boolean,
+    token: LoginToken,
+}
+
+interface LoginToken {
+    expires_in: Date,
+    access_token: string,
+    refresh_token: string
+}
+
 export type {
     User,
-    EaAccount
+    EaAccount,
+    LoginResponse,
+    LoginToken
 };
