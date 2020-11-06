@@ -28,30 +28,32 @@ const loginFailed = () => ({ type: 'LOGIN_USER_FAILED' } as LoginUserFailedActio
 const logoutSuccess = () => ({ type: 'LOGOUT_USER' } as LogoutUserAction)
 
 export const actionCreators = {
-    login: (user: User): AppThunk<Promise<boolean>, KnownAction> => async (dispatch): Promise<boolean> => {
-        if (user) {
-            return fetch(`api/users/login`, {
-                method: "POST",
-                mode: "cors",
-                cache: "no-cache",
-                credentials: "same-origin",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(user)
-            }).then(response => response.json() as Promise<boolean>)
-                .then((isSuccessful): boolean => {
-                    if (isSuccessful) {
-                        toast.success("You've logged in successfully!");
-                        dispatch(loginSucceeded(user))
-                    }
-                    else {
-                        toast.error("Login failed! Check your credentials!");
-                        dispatch(loginFailed());
-                    }
-                    return isSuccessful;
-                });
-        } else return false;
+    login: (user: User): AppThunk<Promise<boolean>, KnownAction> => {
+        return async (dispatch): Promise<boolean> => {
+            if (user) {
+                return fetch(`api/users/login`, {
+                    method: "POST",
+                    mode: "cors",
+                    cache: "no-cache",
+                    credentials: "same-origin",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(user)
+                }).then(response => response.json() as Promise<boolean>)
+                    .then((isSuccessful): boolean => {
+                        if (isSuccessful) {
+                            toast.success("You've logged in successfully!");
+                            dispatch<any>(loginSucceeded(user))
+                        }
+                        else {
+                            toast.error("Login failed! Check your credentials!");
+                            dispatch<any>(loginFailed());
+                        }
+                        return isSuccessful;
+                    });
+            } else return false;
+        };
     }
 };
 

@@ -12,18 +12,17 @@ type LoginProps =
     & RouteComponentProps
 
 const Login: FunctionComponent<LoginProps> = (props) => {
-    const { user, login, isLoginSuccessful, history } = props;
+    const { user, login, history } = props;
     const [currentUser, setCurrentUser] = useState<User>(user);
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        login(currentUser);
-        if (isLoginSuccessful) {
-            history.push("/loggedin");
-        } else {
-            history.push("logingFailed");
-        }
+        (login(currentUser) as unknown as Promise<boolean>).then((isLoginSuccessful) => {
+            if (isLoginSuccessful) {
+                history.push("/loggedin");
+            }
+        });
     }
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
