@@ -18,8 +18,7 @@ interface LoginResponse {
 
 interface LoginToken {
     expires_in: Date,
-    access_token: string,
-    refresh_token: string
+    access_token: string
 }
 
 export type {

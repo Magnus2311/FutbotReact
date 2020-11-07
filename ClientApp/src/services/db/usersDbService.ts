@@ -1,5 +1,5 @@
 import { exception } from "console";
-import { LoginResponse, User } from "../../interfaces/Models";
+import { LoginResponse, LoginToken, User } from "../../interfaces/Models";
 
 export function add(user: User): void {
     var response = fetch("api/users/add", {
@@ -26,12 +26,11 @@ export function login(user: User): Promise<LoginResponse> {
         body: JSON.stringify(user)
     }).then(async (response: Response) => {
         var isSuccessful = response.status == 200;
-
         var loginResponse: LoginResponse = {
             isSuccessful: isSuccessful,
-            token: { await response.text() }
+            token: JSON.parse(await response.text())
         }
-        return response.json();
+        return loginResponse;
     }).catch(error => {
         throw error
     }).then((loginResponse: LoginResponse) => loginResponse);

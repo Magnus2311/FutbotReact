@@ -15,11 +15,13 @@ const AuthenticateBeforeRender: FunctionComponent<AuthenticatedBeforeState> = ({
     const history = useHistory();
 
     useEffect(() => {
-        authenticate(history, user.user).then(isAuthenticated => {
-            setIsAuthenticated(isAuthenticated);
-        })
+        const authenticateAsync = async () => {
+            await authenticate(history, user.user).then(isAuthenticated => {
+                setIsAuthenticated(isAuthenticated);
+            })
+        }
+        authenticateAsync();
     });
-    debugger;
     return isAuthenticated ? render() : null;
 }
 

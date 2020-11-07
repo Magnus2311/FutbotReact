@@ -9,8 +9,6 @@ namespace FutbotReact.Models.Auth
         public string AccessToken { get; set; }
         [JsonPropertyName("expires_in")]
         public DateTime ExpiresIn { get; set; }
-        [JsonPropertyName("refresh_token")]
-        public string RefreshToken { get; set; }
     }
 
 }
