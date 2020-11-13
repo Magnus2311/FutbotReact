@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using FutbotReact.Helpers;
 using FutbotReact.Models.Auth;
@@ -28,6 +29,9 @@ namespace FutbotReact.Services.DbServices
             await _collection.InsertOneAsync(user);
         }
 
+        public async Task<List<User>> GetAll()
+            => await (await _collection.FindAsync(_ => true)).ToListAsync();
+
         public async Task Delete(string username)
             => await _collection.DeleteOneAsync(u => u.Username == username.ToUpper());
 
@@ -40,12 +44,12 @@ namespace FutbotReact.Services.DbServices
         }
 
         public async Task<User> FindByUsernameAsync(string username)
-            => await (await _collection.FindAsync<User>(u => u.Username == username.ToUpper())).FirstOrDefaultAsync();
+            => await (await _collection.FindAsync(u => u.Username == username.ToUpper())).FirstOrDefaultAsync();
 
         public async Task UpdateRefreshToken(User user)
             => await _collection.UpdateOneAsync(
                 Builders<User>.Filter.Eq(u => u.Username, user.Username),
-                Builders<User>.Update.Set(u => u.RefreshToken, user.RefreshToken)
+                Builders<User>.Update.Set(u => u.RefreshTokens, user.RefreshTokens)
             );
     }
 }

@@ -10,5 +10,6 @@ namespace FutbotReact.Models.Auth
         public DateTime Created { get; set; }
         public DateTime? Revoked { get; set; }
         public bool IsActive => Revoked == null && !IsExpired;
+        public string Username { get; set; }
     }
 }

@@ -1,21 +1,24 @@
 import Cookies from 'js-cookie';
 import { LoginToken, User } from "../../interfaces/Models";
-import { login } from "../db/usersDbService";
+import { refreshAccessToken } from "../db/usersDbService";
 import { History } from "history";
-import { isAuthenticated } from './isAuthenticated';
+import { getAccessToken, isAuthenticated } from './isAuthenticated';
 
 const redirectToLogin = (history: History) => {
     history.push('/auth/login');
 }
 
 export const authenticate = async (history: History, user?: User) => {
+    var a = getAccessToken();
+    debugger;
     if (isAuthenticated()) {
         return true;
     } else {
         try {
-            const tokens = user ? await (await login(user)).token : undefined;
-            if (tokens) {
-                setCookies(tokens);
+            const token = (await refreshAccessToken()).token;
+            debugger;
+            if (token) {
+                setCookies(token);
                 return true;
             } else {
                 redirectToLogin(history);
@@ -29,8 +32,5 @@ export const authenticate = async (history: History, user?: User) => {
 }
 
 export const setCookies = (token: LoginToken) => {
-    const expires = token.expires_in || 60 * 60 * 1000
-    const inOneHour = new Date(new Date().getDate() + (expires as unknown as number))
-
-    Cookies.set('access_token', token.access_token, { expires: inOneHour })
+    Cookies.set('access_token', JSON.stringify(token.access_token), { expires: new Date().setHours(new Date().getHours() + 1)})
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Text.Json.Serialization;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
@@ -22,6 +23,6 @@ namespace FutbotReact.Models.Auth
         [BsonElement("eaAccounts")]
         public List<EaAccount> EaAccounts { get; set; } = new List<EaAccount>();
         [BsonElement("refreshToken")]
-        public RefreshToken RefreshToken { get; set; }
+        public List<JwtSecurityToken> RefreshTokens { get; set; } = new List<JwtSecurityToken>();
     }
 }

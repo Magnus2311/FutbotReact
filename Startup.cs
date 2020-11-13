@@ -1,4 +1,6 @@
+using FutbotReact.Helpers;
 using FutbotReact.Services.DbServices;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
@@ -21,6 +23,15 @@ namespace FutbotReact
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors();
+
+            services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(option => 
+                {
+                    option.SlidingExpiration = true;
+                });
+            
             services.AddControllersWithViews();
 
             services.AddSpaStaticFiles(configuration =>
@@ -57,8 +68,11 @@ namespace FutbotReact
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
-
+            app.UseMiddleware<JwtMiddleware>();
             app.UseRouting();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
