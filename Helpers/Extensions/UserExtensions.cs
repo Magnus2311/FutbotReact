@@ -10,42 +10,27 @@ namespace FutbotReact.Helpers.Extensions
 {
     public static class UsersExtensions
     {
-        public static JwtSecurityToken GenerateJwtToken(this User user, AppSettings appSettings)
+        public static string GenerateJwtToken(this User user, AppSettings appSettings, bool isRefreshToken = false)
         {
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(appSettings.Secret));
+
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
+            var header = new JwtHeader(credentials);
+
             var authClaims = new List<Claim>
-                {
-                    new Claim(ClaimTypes.Name, user.Username),
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                };
+            {
+                new Claim(ClaimTypes.Name, user.Username),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            };
 
-            var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(appSettings.Secret));
+            var expires = isRefreshToken ? DateTime.Now.AddYears(1) : DateTime.Now.AddHours(1);
+            var payload = new JwtPayload(appSettings.ValidIssuer, appSettings.ValidAudience, authClaims, DateTime.Now, expires);
 
-            return new JwtSecurityToken(
-                issuer: appSettings.ValidIssuer,
-                audience: appSettings.ValidAudience,
-                expires: DateTime.Now.AddHours(1),
-                claims: authClaims,
-                signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
-                );
-        }
+            var secToken = new JwtSecurityToken(header, payload);
+            var handler = new JwtSecurityTokenHandler();
 
-        public static JwtSecurityToken GenerateRefreshToken(this User user, AppSettings appSettings)
-        {
-            var authClaims = new List<Claim>
-                {
-                    new Claim(ClaimTypes.Name, user.Username),
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                };
-
-            var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(appSettings.Secret));
-
-            return new JwtSecurityToken(
-                issuer: appSettings.ValidIssuer,
-                audience: appSettings.ValidAudience,
-                expires: DateTime.Now.AddYears(1),
-                claims: authClaims,
-                signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
-                );
+            return handler.WriteToken(secToken);
         }
     }
 }

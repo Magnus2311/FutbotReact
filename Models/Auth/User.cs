@@ -23,6 +23,6 @@ namespace FutbotReact.Models.Auth
         [BsonElement("eaAccounts")]
         public List<EaAccount> EaAccounts { get; set; } = new List<EaAccount>();
         [BsonElement("refreshToken")]
-        public List<JwtSecurityToken> RefreshTokens { get; set; } = new List<JwtSecurityToken>();
+        public List<string> RefreshTokens { get; set; } = new List<string>();
     }
 }

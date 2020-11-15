@@ -2,19 +2,17 @@ using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Cryptography;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using System.Text.RegularExpressions;
+using System.Security.Principal;
+using System.Text;
 using System.Threading.Tasks;
 using FutbotReact.Helpers;
 using FutbotReact.Helpers.Extensions;
 using FutbotReact.Models.Auth;
 using FutbotReact.Services.DbServices;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 
 namespace FutbotReact.Controllers
 {
@@ -52,7 +50,7 @@ namespace FutbotReact.Controllers
             if (isSuccessful)
             {
                 var token = user.GenerateJwtToken(_appSettings);
-                var refreshToken = user.GenerateRefreshToken(_appSettings);
+                var refreshToken = user.GenerateJwtToken(_appSettings, true);
                 user.RefreshTokens.Add(refreshToken);
                 await _dbService.UpdateRefreshToken(user);
                 SetRefreshTokenInCookie(refreshToken);
@@ -63,16 +61,18 @@ namespace FutbotReact.Controllers
         }
 
         [HttpGet("getAccessToken")]
-        [Authorize]
         public async Task<IActionResult> GetAccessToken()
         {
-            HttpContext.Request.Cookies.TryGetValue("refresh_token", out string token);
+            HttpContext.Request.Cookies.TryGetValue("refresh_token", out string tokenStr);
+            ValidateToken(tokenStr);
             var handler = new JwtSecurityTokenHandler();
-            var newToken = token.Replace("\\", "");
+            var newToken = tokenStr.Replace("\\", "");
             var jsonToken = new System.IdentityModel.Tokens.Jwt.JwtSecurityToken(newToken);
-            var tokenS = handler.ReadToken(token) as JwtSecurityToken;
+            var tokenS = handler.ReadToken(tokenStr) as JwtSecurityToken;
             var username = tokenS.Claims.FirstOrDefault(claim => claim.Type == "name").Value;
-            return Ok();
+            var user = await _dbService.FindByUsernameAsync(username);
+            var token = user.GenerateJwtToken(_appSettings);
+            return Ok(new AuthenticateResponse(user, token));
         }
 
         private static RefreshToken CreateRefreshToken(string username)
@@ -89,14 +89,37 @@ namespace FutbotReact.Controllers
             };
         }
 
-        private void SetRefreshTokenInCookie(JwtSecurityToken refreshToken)
+        private void SetRefreshTokenInCookie(string refreshToken)
         {
             var cookieOptions = new CookieOptions
             {
                 HttpOnly = true,
-                Expires = refreshToken.ValidTo,
+                Expires = DateTime.Now.AddYears(1),
             };
-            Response.Cookies.Append("refresh_token", refreshToken.ToString(), cookieOptions);
+            Response.Cookies.Append("refresh_token", refreshToken, cookieOptions);
+        }
+
+        private bool ValidateToken(string authToken)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var validationParameters = GetValidationParameters();
+
+            SecurityToken validatedToken;
+            IPrincipal principal = tokenHandler.ValidateToken(authToken, validationParameters, out validatedToken);
+            return true;
+        }
+
+        private TokenValidationParameters GetValidationParameters()
+        {
+            return new TokenValidationParameters()
+            {
+                ValidateLifetime = true, 
+                ValidateAudience = true,
+                ValidateIssuer = true,   
+                ValidIssuer = _appSettings.ValidIssuer,
+                ValidAudience = _appSettings.ValidAudience,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_appSettings.Secret)) // The same key as the one that generate the token
+            };
         }
     }
 }

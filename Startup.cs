@@ -27,11 +27,11 @@ namespace FutbotReact
 
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(option => 
+                .AddCookie(option =>
                 {
                     option.SlidingExpiration = true;
                 });
-            
+
             services.AddControllersWithViews();
 
             services.AddSpaStaticFiles(configuration =>
@@ -80,6 +80,9 @@ namespace FutbotReact
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
             });
+            app.UseCors(
+                options => options.WithOrigins("https://localhost:44312/", "https://localhost:5001/").AllowAnyMethod()
+            );
 
             app.UseSpa(spa =>
             {
