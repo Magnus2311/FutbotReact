@@ -25,7 +25,6 @@ namespace FutbotReact
         {
             services.AddCors();
 
-            services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(option =>
                 {

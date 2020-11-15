@@ -1,9 +1,9 @@
 namespace FutbotReact.Helpers
 {
-    public class AppSettings
+    public static class AppSettings
     {
-        public string Secret { get; set; }
-        public string ValidIssuer { get; set; }
-        public string ValidAudience { get; set; }
+        public const string Secret = "AMGOYbZNFa5ru6IkghTu5QW8Qxp9UePRjCRe5mbq";
+        public const string ValidIssuer = "https://localhost:44312/";
+        public const string ValidAudience = "https://localhost:44312/";
     }
 }

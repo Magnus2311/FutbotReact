@@ -13,12 +13,10 @@ namespace FutbotReact.Helpers
     public class JwtMiddleware
     {
         private readonly RequestDelegate _next;
-        private readonly AppSettings _appSettings;
 
-        public JwtMiddleware(RequestDelegate next, IOptions<AppSettings> appSettings)
+        public JwtMiddleware(RequestDelegate next)
         {
             _next = next;
-            _appSettings = appSettings.Value;
         }
 
         public async Task Invoke(HttpContext context, UsersDbService userService)
@@ -36,7 +34,7 @@ namespace FutbotReact.Helpers
             try
             {
                 var tokenHandler = new JwtSecurityTokenHandler();
-                var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
+                var key = Encoding.ASCII.GetBytes(AppSettings.Secret);
                 tokenHandler.ValidateToken(token, new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,

@@ -1,32 +1,16 @@
 import Cookies from 'js-cookie';
-import { LoginToken, User } from "../../interfaces/Models";
-import { refreshAccessToken } from "../db/usersDbService";
+import { LoginToken } from "../../interfaces/Models";
 import { History } from "history";
-import { getAccessToken, isAuthenticated } from './isAuthenticated';
+import { isAuthenticated } from './isAuthenticated';
 
-const redirectToLogin = (history: History) => {
-    history.push('/auth/login');
-}
-
-export const authenticate = async (history: History, user?: User) => {
-    var a = getAccessToken();
-    debugger;
-    if (isAuthenticated()) {
-        return true;
-    } else {
-        try {
-            const token = (await refreshAccessToken()).token;
+export const authenticate = async (history: History) => {
+    if (!isAuthenticated()) {
+        debugger;
+        await fetch("/users/getAccessToken").then(response => console.log(response)).catch(error => { throw error });
+        debugger;
+        if (!isAuthenticated()) {
             debugger;
-            if (token) {
-                setCookies(token);
-                return true;
-            } else {
-                redirectToLogin(history);
-                return false;
-            }
-        } catch (error) {
-            redirectToLogin(history);
-            return false;
+            history.push("/auth/login");
         }
     }
 }

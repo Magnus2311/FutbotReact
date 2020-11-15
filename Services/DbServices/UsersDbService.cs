@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using FutbotReact.Helpers;
 using FutbotReact.Models.Auth;
-using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
 using utbotReact.Services;
 
@@ -13,6 +12,11 @@ namespace FutbotReact.Services.DbServices
         private readonly HashPassword _hasher;
         private readonly IMongoCollection<User> _collection;
         private readonly LoggerDbService _logger;
+
+        public UsersDbService()
+        {
+
+        }
 
         public UsersDbService(HashPassword hasher,
             LoggerDbService logger)
@@ -37,7 +41,7 @@ namespace FutbotReact.Services.DbServices
 
         public async Task<bool> Login(User user)
         {
-            var dbUser = await (await _collection.FindAsync<User>(u => u.Username == user.Username.ToUpper())).FirstOrDefaultAsync();
+            var dbUser = await (await _collection.FindAsync(u => u.Username == user.Username.ToUpper())).FirstOrDefaultAsync();
             var isSuccessful = _hasher.VerifyPassword(dbUser.Password, user.Password);
             await _logger.Log(user, isSuccessful);
             return isSuccessful;

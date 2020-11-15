@@ -10,9 +10,9 @@ namespace FutbotReact.Helpers.Extensions
 {
     public static class UsersExtensions
     {
-        public static string GenerateJwtToken(this User user, AppSettings appSettings, bool isRefreshToken = false)
+        public static string GenerateJwtToken(this User user, bool isRefreshToken = false)
         {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(appSettings.Secret));
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(AppSettings.Secret));
 
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
@@ -25,7 +25,7 @@ namespace FutbotReact.Helpers.Extensions
             };
 
             var expires = isRefreshToken ? DateTime.Now.AddYears(1) : DateTime.Now.AddHours(1);
-            var payload = new JwtPayload(appSettings.ValidIssuer, appSettings.ValidAudience, authClaims, DateTime.Now, expires);
+            var payload = new JwtPayload(AppSettings.ValidIssuer, AppSettings.ValidAudience, authClaims, DateTime.Now, expires);
 
             var secToken = new JwtSecurityToken(header, payload);
             var handler = new JwtSecurityTokenHandler();

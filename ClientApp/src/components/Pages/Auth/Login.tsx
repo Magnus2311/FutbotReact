@@ -20,7 +20,7 @@ const Login: FunctionComponent<LoginProps> = (props) => {
 
         (login(currentUser) as unknown as Promise<boolean>).then((isLoginSuccessful) => {
             if (isLoginSuccessful) {
-                history.push("/loggedin");
+                history.push("/");
             }
         });
     }
