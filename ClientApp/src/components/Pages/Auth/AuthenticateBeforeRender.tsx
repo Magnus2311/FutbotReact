@@ -1,17 +1,12 @@
 import { FunctionComponent, useEffect, useState } from "react"
 import { useHistory } from "react-router";
-import { authenticate } from "../../../services/auth/authenticate"
+import { UserState } from "../../../store/User";
 
-interface AuthenticatedBeforeState {
-    render: any
-}
+type AuthenticateBeforeRenderProps = any & UserState;
 
-const AuthenticateBeforeRender: FunctionComponent<AuthenticatedBeforeState> = ({ render }) => {
+const AuthenticateBeforeRender: FunctionComponent<AuthenticateBeforeRenderProps> = ({ render }) => {
     const history = useHistory();
 
-    useEffect(() => {
-            authenticate(history);
-    });
     return render();
 }
 

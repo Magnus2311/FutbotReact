@@ -1,10 +1,8 @@
 using System;
-using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Principal;
 using System.Text;
-using System.Threading.Tasks;
 using FutbotReact.Helpers.Extensions;
 using FutbotReact.Services.DbServices;
 using Microsoft.AspNetCore.Http;
@@ -26,24 +24,30 @@ namespace FutbotReact.Helpers.Attributes
             _dbService = new UsersDbService();
         }
 
-        public async void OnAuthorization(AuthorizationFilterContext context)
+        public void OnAuthorization(AuthorizationFilterContext context)
         {
+            var handler = new JwtSecurityTokenHandler();
             _context = context;
             context.HttpContext.Request.Cookies.TryGetValue("access_token", out string accessToken);
             if (accessToken != null && ValidateToken(accessToken))
+            {
+                var username = (handler.ReadToken(accessToken) as JwtSecurityToken).Claims.FirstOrDefault(claim => claim.Type.Contains("name")).Value;
+                var user = _dbService.FindByUsernameAsync(username).GetAwaiter().GetResult();
+                context.HttpContext.Items["User"] = user;
                 return;
+            }
 
             context.HttpContext.Request.Cookies.TryGetValue("refresh_token", out string token);
             if (ValidateToken(token))
             {
-                var handler = new JwtSecurityTokenHandler();
-                var username = (handler.ReadToken(token) as JwtSecurityToken).Claims.FirstOrDefault(claim => claim.Type == "name").Value;
-                var user = await _dbService.FindByUsernameAsync(username);
+                var username = (handler.ReadToken(token) as JwtSecurityToken).Claims.FirstOrDefault(claim => claim.Type.Contains("name")).Value;
+                var user = _dbService.FindByUsernameAsync(username).GetAwaiter().GetResult();
                 if (user.RefreshTokens.Any(rt => rt == token))
                 {
                     var jwtToken = user.GenerateJwtToken();
                     accessSecToken = user.GenerateJwtToken();
-                    context.HttpContext.Response.OnStarting(OnStartingCallback);
+                    SetAccessToken(accessSecToken, context);
+                    context.HttpContext.Items["User"] = user;
                     return;
                 }
             }
@@ -51,24 +55,21 @@ namespace FutbotReact.Helpers.Attributes
             context.Result = new JsonResult(new { message = "Unauthorized" }) { StatusCode = StatusCodes.Status401Unauthorized };
         }
 
-        private Task OnStartingCallback()
-        {
-            var cookieOptions = new CookieOptions()
-            {
-                Expires = DateTimeOffset.UtcNow.AddHours(1)
-            };
-            _context.HttpContext.Response.Cookies.Append("access_token", accessSecToken, cookieOptions);
-            return Task.FromResult(0);
-        }
-
         private bool ValidateToken(string authToken)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var validationParameters = GetValidationParameters();
 
-            SecurityToken validatedToken;
-            IPrincipal principal = tokenHandler.ValidateToken(authToken, validationParameters, out validatedToken);
-            return true;
+            try
+            {
+                SecurityToken validatedToken;
+                IPrincipal principal = tokenHandler.ValidateToken(authToken, validationParameters, out validatedToken);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         private TokenValidationParameters GetValidationParameters()

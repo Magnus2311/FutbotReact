@@ -52,11 +52,12 @@ namespace FutbotReact.Controllers
             return Unauthorized();
         }
 
-        [HttpGet("getAccessToken")]
+        [HttpGet("getUsername")]
         [Authorize]
-        public IActionResult GetAccessToken() 
+        public IActionResult GetUserName()
         {
-            return Ok();
+            var user = (HttpContext.Items["User"] as User);
+            return Ok(user);
         }
 
         private void SetRefreshTokenInCookie(string refreshToken)

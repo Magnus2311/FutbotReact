@@ -1,10 +1,11 @@
-import React, { ChangeEvent, FormEvent, FunctionComponent, useState } from "react";
+import React, { ChangeEvent, FormEvent, FunctionComponent, useContext, useState } from "react";
 import { User } from "../../../interfaces/Models";
 import TextBox from "../../Common/Controls/TextBox";
 import * as UserStore from "../../../store/User";
 import { connect } from "react-redux";
 import { ApplicationState } from "../../../store";
 import { RouteComponentProps } from "react-router";
+import { AuthContext } from "../../Common/Contexts/AuthContext";
 
 type LoginProps =
     UserStore.UserState
@@ -14,6 +15,7 @@ type LoginProps =
 const Login: FunctionComponent<LoginProps> = (props) => {
     const { user, login, history } = props;
     const [currentUser, setCurrentUser] = useState<User>(user);
+    const {setUser} = useContext(AuthContext);
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -21,6 +23,7 @@ const Login: FunctionComponent<LoginProps> = (props) => {
         (login(currentUser) as unknown as Promise<boolean>).then((isLoginSuccessful) => {
             if (isLoginSuccessful) {
                 history.push("/");
+                setUser(user);
             }
         });
     }

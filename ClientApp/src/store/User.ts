@@ -3,7 +3,6 @@ import { AppThunk, } from '.';
 import { LoginResponse, User } from '../interfaces/Models';
 import { toast } from "react-toastify";
 import { login } from "../services/db/usersDbService";
-import { setCookies } from '../services/auth/authenticate';
 
 export interface UserState {
     isLoginSuccessful: boolean,
@@ -35,7 +34,6 @@ export const actionCreators = {
             if (user) {
                 return login(user).then((loginResponse: LoginResponse): boolean => {
                     if (loginResponse.isSuccessful) {
-                        setCookies(loginResponse.token);
                         toast.success("You've logged in successfully!");
                         dispatch<any>(loginSucceeded(user))
                     }

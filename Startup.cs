@@ -67,7 +67,6 @@ namespace FutbotReact
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
-            app.UseMiddleware<JwtMiddleware>();
             app.UseRouting();
 
             app.UseAuthentication();

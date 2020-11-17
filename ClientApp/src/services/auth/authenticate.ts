@@ -1,20 +1,25 @@
-import Cookies from 'js-cookie';
-import { LoginToken } from "../../interfaces/Models";
-import { History } from "history";
-import { isAuthenticated } from './isAuthenticated';
+import { User } from "../../interfaces/Models";
 
-export const authenticate = async (history: History) => {
-    if (!isAuthenticated()) {
-        debugger;
-        await fetch("/users/getAccessToken").then(response => console.log(response)).catch(error => { throw error });
-        debugger;
-        if (!isAuthenticated()) {
-            debugger;
-            history.push("/auth/login");
-        }
-    }
-}
-
-export const setCookies = (token: LoginToken) => {
-    Cookies.set('access_token', JSON.stringify(token.access_token), { expires: new Date().setHours(new Date().getHours() + 1)})
+export const authenticate = (): Promise<User | undefined> => {
+        return fetch("api/users/getUsername", {
+            method: "GET",
+            mode: "cors",
+            cache: "no-cache",
+            credentials: "same-origin",
+            headers: {
+                "Content-Type": "application/json"
+            },
+        })
+        .then(response => {
+            if (response.status === 200)
+                return response.json();
+            
+            throw "Unauthorized";
+        })
+        .then((userResponse: User) => {
+            return userResponse;
+        })
+        .catch(() => {
+            return undefined;
+        });
 }

@@ -15,14 +15,14 @@ namespace FutbotReact.Services.DbServices
 
         public UsersDbService()
         {
+            _collection = _db.GetCollection<User>(DatabaseCollections.Users);
 
         }
 
         public UsersDbService(HashPassword hasher,
-            LoggerDbService logger)
+            LoggerDbService logger) : this()
         {
             _hasher = hasher;
-            _collection = _db.GetCollection<User>(DatabaseCollections.Users);
             _logger = logger;
         }
 
@@ -52,7 +52,7 @@ namespace FutbotReact.Services.DbServices
 
         public async Task UpdateRefreshToken(User user)
             => await _collection.UpdateOneAsync(
-                Builders<User>.Filter.Eq(u => u.Username, user.Username),
+                Builders<User>.Filter.Eq(u => u.Username, user.Username.ToUpper()),
                 Builders<User>.Update.Set(u => u.RefreshTokens, user.RefreshTokens)
             );
     }
