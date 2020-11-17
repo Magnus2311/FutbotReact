@@ -23,10 +23,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\src\components\Pages\Auth\Index.tsx" />
     <None Remove="ClientApp\src\components\Pages\Auth\UserNavMenu.tsx" />
   </ItemGroup>
 
   <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\components\Pages\Auth\Index.tsx" />
     <TypeScriptCompile Include="ClientApp\src\components\Pages\Auth\UserNavMenu.tsx" />
   </ItemGroup>
 

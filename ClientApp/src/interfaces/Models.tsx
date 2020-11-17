@@ -1,4 +1,4 @@
-interface User {
+export interface User {
     username: string,
     password: string,
     isConfirmed?: boolean,
@@ -6,26 +6,26 @@ interface User {
     eaAccounts?: Array<EaAccount>
 }
 
-interface EaAccount {
+export interface EaAccount {
     username: string,
     password: string
 }
 
-interface LoginResponse {
+export interface LoginResponse {
     isSuccessful: boolean,
     token: LoginToken,
 }
 
-interface LoginToken {
+export interface LoginToken {
     expires_in: Date,
     access_token: string,
     isConfirmed: boolean,
     username: string
 }
 
-export type {
-    User,
-    EaAccount,
-    LoginResponse,
-    LoginToken
-};
+//export type {
+//    User,
+//    EaAccount,
+//    LoginResponse,
+//    LoginToken
+//};

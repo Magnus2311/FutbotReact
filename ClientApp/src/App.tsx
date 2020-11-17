@@ -10,6 +10,7 @@ import { AuthenticatedRoute } from './components/Pages/Auth/AuthenticatedRoute';
 import { AuthContext } from './components/Common/Contexts/AuthContext';
 import { authenticate } from './services/auth/authenticate';
 import { User } from './interfaces/Models';
+import Index from './components/Pages/Auth/Index';
 
 const App = () => {
     const [user, setUser] = React.useState<User>();
@@ -18,6 +19,7 @@ const App = () => {
     return <AuthContext.Provider value={{user: user, setUser: setUser}}>
         <Layout>
             <AuthenticatedRoute Component={Home} exact={true} path="/" />
+            <AuthenticatedRoute Component={Index} exact path="/auth/index" />
             <Route path='/counter' component={Counter} />
             <Route path='/auth/registration' component={Registration} />
             <Route path='/auth/login' component={Login} />

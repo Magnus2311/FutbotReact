@@ -1,6 +1,7 @@
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Security.Principal;
 using System.Text;
 using FutbotReact.Helpers.Extensions;
@@ -64,6 +65,7 @@ namespace FutbotReact.Helpers.Attributes
             {
                 SecurityToken validatedToken;
                 IPrincipal principal = tokenHandler.ValidateToken(authToken, validationParameters, out validatedToken);
+                _context.HttpContext.User = (ClaimsPrincipal)principal;
                 return true;
             }
             catch

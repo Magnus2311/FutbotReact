@@ -1,13 +1,14 @@
-import { FunctionComponent, useEffect, useState } from "react"
+import React, { FunctionComponent, useContext } from "react"
 import { useHistory } from "react-router";
-import { UserState } from "../../../store/User";
+import { AuthContext } from "../../Common/Contexts/AuthContext";
+import Login from "./Login";
 
-type AuthenticateBeforeRenderProps = any & UserState;
+type AuthenticateBeforeRenderProps = any;
 
 const AuthenticateBeforeRender: FunctionComponent<AuthenticateBeforeRenderProps> = ({ render }) => {
-    const history = useHistory();
+    const { user } = useContext(AuthContext);
 
-    return render();
+    return user ? render() : <Login returnAfterLogin={render} />;
 }
 
 export default AuthenticateBeforeRender;

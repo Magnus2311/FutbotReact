@@ -1,13 +1,12 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
-using FutbotReact.Helpers;
 using FutbotReact.Helpers.Attributes;
 using FutbotReact.Helpers.Extensions;
 using FutbotReact.Models.Auth;
 using FutbotReact.Services.DbServices;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 
 namespace FutbotReact.Controllers
 {
@@ -24,8 +23,6 @@ namespace FutbotReact.Controllers
             _dbService = dbService;
             _logger = logger;
         }
-
-        public string Get() => "Opa opa";
 
         [HttpPost("add")]
         public async Task Add(User user)
@@ -54,10 +51,19 @@ namespace FutbotReact.Controllers
 
         [HttpGet("getUsername")]
         [Authorize]
-        public IActionResult GetUserName()
+        public IActionResult GetUserName() => Ok(HttpContext.Items["User"] as User);
+
+        [HttpPost("logout")]
+        [Authorize]
+        public async Task<IActionResult> Logout()
         {
-            var user = (HttpContext.Items["User"] as User);
-            return Ok(user);
+            var user = HttpContext.Items["User"] as User;
+            var refreshToken = HttpContext.Request.Cookies.FirstOrDefault(c => c.Key == "refresh_token").Value;
+            user.RefreshTokens.Remove(refreshToken);
+            await _dbService.UpdateRefreshToken(user);
+            HttpContext.Response.Cookies.Delete("access_token");
+            HttpContext.Response.Cookies.Delete("refresh_token");
+            return Ok();
         }
 
         private void SetRefreshTokenInCookie(string refreshToken)

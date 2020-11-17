@@ -1,7 +1,8 @@
+import { toast } from "react-toastify";
 import { LoginResponse, User } from "../../interfaces/Models";
 
 export function add(user: User): void {
-    var response = fetch("api/users/add", {
+    fetch("api/users/add", {
         method: "POST",
         mode: "cors",
         cache: "no-cache",
@@ -13,7 +14,7 @@ export function add(user: User): void {
     });
 }
 
-export function login(user: User): Promise<LoginResponse> {
+export function login(user: User): Promise<boolean> {
     return fetch("api/users/login", {
         method: "POST",
         mode: "cors",
@@ -32,8 +33,14 @@ export function login(user: User): Promise<LoginResponse> {
         }
         return loginResponse;
     }).catch(error => {
-        throw error
-    }).then((loginResponse: LoginResponse) => loginResponse);
+        throw error;
+    }).then((loginResponse: LoginResponse) => {
+        if (loginResponse.isSuccessful)
+            toast.success("You've logged in successfully!");
+        else
+            toast.error("Login failed! Check your credentials!");
+        return loginResponse.isSuccessful;
+    });
 }
 
 export function refreshAccessToken(): Promise<LoginResponse> {

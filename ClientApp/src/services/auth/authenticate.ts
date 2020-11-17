@@ -1,3 +1,4 @@
+import Cookies from "js-cookie";
 import { User } from "../../interfaces/Models";
 
 export const authenticate = (): Promise<User | undefined> => {
@@ -22,4 +23,16 @@ export const authenticate = (): Promise<User | undefined> => {
         .catch(() => {
             return undefined;
         });
+}
+
+export const sighOut = async () => {
+    await fetch("api/users/logout", {
+        method: "POST",
+        credentials: "same-origin",
+        cache: "no-cache",
+        mode: "cors",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    });
 }

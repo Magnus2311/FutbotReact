@@ -1,29 +1,24 @@
 import React, { ChangeEvent, FormEvent, FunctionComponent, useContext, useState } from "react";
 import { User } from "../../../interfaces/Models";
 import TextBox from "../../Common/Controls/TextBox";
-import * as UserStore from "../../../store/User";
-import { connect } from "react-redux";
-import { ApplicationState } from "../../../store";
 import { RouteComponentProps } from "react-router";
 import { AuthContext } from "../../Common/Contexts/AuthContext";
+import { login } from "../../../services/db/usersDbService";
 
-type LoginProps =
-    UserStore.UserState
-    & typeof UserStore.actionCreators
-    & RouteComponentProps
+type LoginProps = RouteComponentProps & any;
 
-const Login: FunctionComponent<LoginProps> = (props) => {
-    const { user, login, history } = props;
-    const [currentUser, setCurrentUser] = useState<User>(user);
-    const {setUser} = useContext(AuthContext);
+const Login: FunctionComponent<LoginProps> = ({ history, returnAfterLogin }) => {
+    const [logged, setLogged] = useState(false);
+    const [currentUser, setCurrentUser] = useState<User>({} as User);
+    const { setUser } = useContext(AuthContext);
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         (login(currentUser) as unknown as Promise<boolean>).then((isLoginSuccessful) => {
             if (isLoginSuccessful) {
-                history.push("/");
-                setUser(user);
+                setUser(currentUser);
+                setLogged(isLoginSuccessful);
             }
         });
     }
@@ -32,7 +27,7 @@ const Login: FunctionComponent<LoginProps> = (props) => {
         setCurrentUser({ ...currentUser, [e.target.name]: e.target.value });
     }
 
-    return <form onSubmit={handleSubmit}>
+    return logged ? returnAfterLogin : <form onSubmit={handleSubmit}>
         <TextBox
             type="email"
             name="username"
@@ -51,7 +46,4 @@ const Login: FunctionComponent<LoginProps> = (props) => {
     </form>
 }
 
-export default connect(
-    (state: ApplicationState) => state.user,
-    UserStore.actionCreators
-)(Login as any);
+export default Login;
