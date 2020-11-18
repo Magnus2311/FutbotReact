@@ -1,22 +1,25 @@
 import * as React from 'react';
-import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
+import { Collapse, Container, Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import './NavMenu.css';
 import UserNavMenu from './Auth/UserNavMenu';
+import { AuthContext } from '../Common/Contexts/AuthContext';
 
-export default class NavMenu extends React.PureComponent<{}, { isOpen: boolean }> {
-    public state = {
-        isOpen: false
-    };
+const NavMenu: React.FunctionComponent = () => {
+    const {user} = React.useContext(AuthContext);
+    const [isOpen, setIsOpen] = React.useState(false);
+    const [isEaAccountsOpen, setIsEaAccountsOpen] = React.useState(false);
 
-    public render() {
+    const toggle = () => setIsOpen(!isOpen);
+    const toggleEaAccounts = () => setIsEaAccountsOpen(!isEaAccountsOpen);
+    
         return (
             <header>
                 <Navbar className="navbar-expand-sm navbar-toggleable-sm border-bottom box-shadow mb-3" light>
                     <Container>
                         <NavbarBrand tag={Link} to="/">FutbotReact</NavbarBrand>
-                        <NavbarToggler onClick={this.toggle} className="mr-2" />
-                        <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={this.state.isOpen} navbar>
+                        <NavbarToggler onClick={toggle} className="mr-2" />
+                        <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={isOpen} navbar>
                             <ul className="navbar-nav flex-grow">
                                 <NavItem>
                                     <NavLink tag={Link} className="text-dark" to="/">Home</NavLink>
@@ -24,6 +27,15 @@ export default class NavMenu extends React.PureComponent<{}, { isOpen: boolean }
                                 <NavItem>
                                     <NavLink tag={Link} className="text-dark" to="/counter">Counter</NavLink>
                                 </NavItem>
+                                <Dropdown nav inNavbar isOpen={isEaAccountsOpen} toggle={toggleEaAccounts}>
+                                    <DropdownToggle nav caret>
+                                        Ea Accounts
+                                    </DropdownToggle>
+                                    <DropdownMenu>
+                                        <DropdownItem tag={Link} className="text-dark" to="/ea/add">Add</DropdownItem>
+                                        <DropdownItem tag={Link} className="text-dark" to="/ea/all">All</DropdownItem>
+                                    </DropdownMenu>
+                                 </Dropdown>
                                 <UserNavMenu />
                             </ul>
                         </Collapse>
@@ -31,11 +43,6 @@ export default class NavMenu extends React.PureComponent<{}, { isOpen: boolean }
                 </Navbar>
             </header>
         );
-    }
-
-    private toggle = () => {
-        this.setState({
-            isOpen: !this.state.isOpen
-        });
-    }
 }
+
+export default NavMenu;
