@@ -3,6 +3,7 @@ using FutbotReact.Helpers.Extensions;
 using FutbotReact.Models.DTOs;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using System;
 
 namespace FutbotReact.Services.SeleniumServices
 {
@@ -32,7 +33,14 @@ namespace FutbotReact.Services.SeleniumServices
                 return LoginStatus.WrongCredentials;
 
             confirmationCodeInput.Click();
-            return LoginStatus.WaitingForPassword;
+            return LoginStatus.WaitingForSecurityCode;
+        }
+
+        internal LoginStatus SubmitSecurityCode(string securityCode)
+        {
+            _driver.FindElementById("oneTimeCode").SendKeys(securityCode);
+            _driver.FindElementById("btnSubmit").Click();
+            return LoginStatus.Logged;
         }
     }
 }

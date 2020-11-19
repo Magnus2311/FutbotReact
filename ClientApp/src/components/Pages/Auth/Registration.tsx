@@ -22,7 +22,8 @@ const Registration: FunctionComponent<RouteComponentProps> = ({ history }) => {
         const userToInsert: User = {
             createdDate: new Date(),
             password: user.password,
-            username: user.username
+            username: user.username,
+            eaAccounts: []
         }
         usersDb.add(userToInsert);
         history.push("/auth/emailsent")

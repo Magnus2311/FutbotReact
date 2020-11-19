@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using FutbotReact.Helpers;
 using FutbotReact.Helpers.Attributes;
@@ -36,6 +37,17 @@ namespace FutbotReact.Controllers
             user.EaAccounts.Add(eaAccount);
             await _dbService.UpdateEaAccounts(user);
 
+            return Ok(loginStatus);
+        }
+
+        [HttpPost("securitycode")]
+        [Authorize]
+        public async Task<IActionResult> SubmitSecurityCode(string securityCode)
+        {
+            LoginStatus loginStatus = LoginStatus.Unknown;
+            var user = HttpContext.Items["User"] as User;
+            var chromeDriver = ChromeInstances.Instance.ChromeDrivers[user.Username];
+            loginStatus = new LoginService(chromeDriver).SubmitSecurityCode(securityCode);
             return Ok(loginStatus);
         }
     }

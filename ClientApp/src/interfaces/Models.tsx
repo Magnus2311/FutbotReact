@@ -23,6 +23,15 @@ export interface LoginToken {
     username: string
 }
 
+export const enum LoginStatus {
+    Unknown,
+    Logged,
+    WaitingForSecurityCode,
+    WrongSecurityCode,
+    WrongCredentials
+}
+
+
 //export type {
 //    User,
 //    EaAccount,

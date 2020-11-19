@@ -4,7 +4,8 @@
     {
         Unknown,
         Logged,
-        WaitingForPassword,
+        WaitingForSecurityCode,
+        WrongSecurityCode,
         WrongCredentials
     }
 }

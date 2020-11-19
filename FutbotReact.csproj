@@ -27,11 +27,13 @@
   <ItemGroup>
     <None Remove="ClientApp\src\components\Pages\Auth\Index.tsx" />
     <None Remove="ClientApp\src\components\Pages\Auth\UserNavMenu.tsx" />
+    <None Remove="ClientApp\src\services\fetch\fetch.ts" />
   </ItemGroup>
 
   <ItemGroup>
     <TypeScriptCompile Include="ClientApp\src\components\Pages\Auth\Index.tsx" />
     <TypeScriptCompile Include="ClientApp\src\components\Pages\Auth\UserNavMenu.tsx" />
+    <TypeScriptCompile Include="ClientApp\src\services\fetch\fetch.ts" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

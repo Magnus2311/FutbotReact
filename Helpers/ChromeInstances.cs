@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using OpenQA.Selenium.Chrome;
 using System.Collections.Concurrent;
+using System;
 
 namespace FutbotReact.Helpers
 {
@@ -16,7 +17,7 @@ namespace FutbotReact.Helpers
         public bool Add(string username)
         {
             var chromeOptions = new ChromeOptions();
-            var a = @$"user-data-dir=C:\Users\yavor.orlyov\AppData\Local\Google\Chrome\User Data\{username}\Default";
+            var a = @$"user-data-dir={Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\Google\Chrome\User Data\{username.Split("@").FirstOrDefault()}\Default";
             chromeOptions.AddArgument(a);
             return ChromeDrivers.TryAdd(username, new ChromeDriver(chromeOptions));
         }

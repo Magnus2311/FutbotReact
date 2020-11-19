@@ -1,3 +1,4 @@
+import { stat } from 'fs';
 import { toast } from 'react-toastify';
 import { Action, Reducer } from 'redux';
 import { AppThunk } from '.';
@@ -49,7 +50,7 @@ export const actionCreators = {
 
 export const reducer: Reducer<EaAccountsState> = (state: EaAccountsState | undefined, incomingAction: Action): EaAccountsState => {
     if (state === undefined) {
-        return { eaAccounts: [] }; 
+        return { eaAccounts: [] };
     }
 
     const action = incomingAction as KnownAction;
@@ -57,8 +58,8 @@ export const reducer: Reducer<EaAccountsState> = (state: EaAccountsState | undef
         case 'ADD_EA_ACCOUNT_SUCCESS':
             toast.success("You've added your EA account successfully!");
             return { eaAccounts: [...state.eaAccounts, action.eaAccount] };
-            case "LOAD_EA_ACCOUNTS_SUCCESS":
-                return { eaAccounts: action.eaAccounts }
+        case "LOAD_EA_ACCOUNTS_SUCCESS":
+            return { ...state.eaAccounts, eaAccounts: action.eaAccounts }
         default:
             return state;
     }
