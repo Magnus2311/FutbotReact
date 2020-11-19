@@ -3,7 +3,7 @@ export interface User {
     password: string,
     isConfirmed?: boolean,
     createdDate: Date,
-    eaAccounts?: Array<EaAccount>
+    eaAccounts: EaAccount[]
 }
 
 export interface EaAccount {

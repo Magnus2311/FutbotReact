@@ -1,7 +1,6 @@
-import Cookies from "js-cookie";
 import { User } from "../../interfaces/Models";
 
-export const authenticate = (): Promise<User | undefined> => {
+export const authenticate = (): Promise<User> => {
         return fetch("api/users/getUsername", {
             method: "GET",
             mode: "cors",
@@ -21,7 +20,7 @@ export const authenticate = (): Promise<User | undefined> => {
             return userResponse;
         })
         .catch(() => {
-            return undefined;
+            return {} as User;
         });
 }
 

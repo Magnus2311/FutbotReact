@@ -1,16 +1,17 @@
 import React, { ChangeEvent, FormEvent, FunctionComponent, useContext, useState } from "react";
 import { User } from "../../../interfaces/Models";
 import TextBox from "../../Common/Controls/TextBox";
-import { RouteComponentProps } from "react-router";
+import { RouteComponentProps, useHistory } from "react-router";
 import { AuthContext } from "../../Common/Contexts/AuthContext";
 import { login } from "../../../services/db/usersDbService";
 
-type LoginProps = RouteComponentProps & any;
+type LoginProps = any;
 
-const Login: FunctionComponent<LoginProps> = ({ history, returnAfterLogin }) => {
+const Login: FunctionComponent<LoginProps> = ({ returnAfterLogin }) => {
     const [logged, setLogged] = useState(false);
     const [currentUser, setCurrentUser] = useState<User>({} as User);
     const { setUser } = useContext(AuthContext);
+    const history = useHistory();
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -18,7 +19,7 @@ const Login: FunctionComponent<LoginProps> = ({ history, returnAfterLogin }) => 
         (login(currentUser) as unknown as Promise<boolean>).then((isLoginSuccessful) => {
             if (isLoginSuccessful) {
                 setUser(currentUser);
-                setLogged(isLoginSuccessful);
+                setLogged(true);
             }
         });
     }

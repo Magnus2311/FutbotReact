@@ -4,8 +4,7 @@ import * as Counter from './Counter';
 import * as EaAccounts from "./EaAccounts";
 
 export interface ApplicationState {
-    counter: Counter.CounterState | undefined;
-    eaAccounts: EaAccounts.EaAccountsState;
+    eaAccounts: EaAccounts.EaAccountsState | undefined;
 }
 
 export const reducers = {

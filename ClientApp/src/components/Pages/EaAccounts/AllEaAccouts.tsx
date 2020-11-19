@@ -6,7 +6,7 @@ import { EaAccountsState } from "../../../store/EaAccounts";
 type AllEaAccountsProps = EaAccountsState
 
 const AllEaAccounts: FunctionComponent<AllEaAccountsProps> = ({eaAccounts}) => {
-return (<>{eaAccounts.map(eaAccount => <div key={eaAccount.username}>{eaAccount.username}</div>)}</>);
+return (<>{eaAccounts ? eaAccounts.map(eaAccount => <div key={eaAccount.username}>{eaAccount.username}</div>): <div></div>}</>);
 }
 
 export default connect((state: ApplicationState) => state.eaAccounts)(AllEaAccounts)

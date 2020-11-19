@@ -8,7 +8,7 @@ type AuthenticateBeforeRenderProps = any;
 const AuthenticateBeforeRender: FunctionComponent<AuthenticateBeforeRenderProps> = ({ render }) => {
     const { user } = useContext(AuthContext);
 
-    return user ? render() : <Login returnAfterLogin={render} />;
+    return user.username ? render() : <Login returnAfterLogin={render} />;
 }
 
 export default AuthenticateBeforeRender;

@@ -12,7 +12,7 @@ const LoggedNavMenu: FunctionComponent = () => {
     }
 
     return <div className="nav-item" style={{cursor: "pointer"}}>
-        <a onClick={handleClick} className="text-dark nav-link">{authContext.user ? authContext.user.username.toLowerCase() : "WTF????"}</a>
+        <a onClick={handleClick} className="text-dark nav-link">{authContext.user.username ? authContext.user.username.toLowerCase() : "WTF????"}</a>
     </div>
 }
 

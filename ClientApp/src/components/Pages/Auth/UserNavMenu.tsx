@@ -5,7 +5,7 @@ import NotLoggedNavMenu from "./NotLoggedNavMenu";
 
 const UserNavMenu: FunctionComponent = () => {
     const {user} = useContext(AuthContext);
-    return user ? <LoggedNavMenu /> :
+    return user.username ? <LoggedNavMenu /> :
          <NotLoggedNavMenu />
 }
 

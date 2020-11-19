@@ -1,4 +1,5 @@
 using FutbotReact.Helpers;
+using FutbotReact.Models.Auth;
 using FutbotReact.Services.DbServices;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;

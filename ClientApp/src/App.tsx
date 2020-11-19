@@ -13,11 +13,16 @@ import { User } from './interfaces/Models';
 import Index from './components/Pages/Auth/Index';
 import AddEaAccount from './components/Pages/EaAccounts/AddEaAccount';
 import AllEaAccouts from './components/Pages/EaAccounts/AllEaAccouts';
+import { connect } from 'react-redux';
+import * as eaAccountsActions from "./store/EaAccounts"
 
-const App = () => {
-    const [user, setUser] = React.useState<User>();
-    authenticate().then(userRes => setUser(userRes));
-
+const App: React.FunctionComponent<any> = ({onLoadUser}) => {
+    const [user, setUser] = React.useState<User>({} as User);
+    React.useEffect(() => {
+        authenticate().then(userRes => setUser(userRes));
+        onLoadUser(user);
+    
+    }, []);
     return <AuthContext.Provider value={{user: user, setUser: setUser}}>
         <Layout>
             <AuthenticatedRoute Component={Home} exact={true} path="/" />
@@ -31,4 +36,12 @@ const App = () => {
     </AuthContext.Provider>;
 }
 
-export default App;
+const mapDispatchToProps = (dispatch: any) => {
+    return {
+        onLoadUser: (user: User) => { 
+            dispatch(eaAccountsActions.actionCreators.loadEaAccounts(user))  
+        }
+    }
+}
+
+export default connect(undefined, mapDispatchToProps)(App);
