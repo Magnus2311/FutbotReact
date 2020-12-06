@@ -3,11 +3,17 @@ import { EaAccount, LoginStatus } from "../../../interfaces/Models";
 import TextBox from "../../Common/Controls/TextBox";
 import { useHistory } from "react-router";
 import { post } from "../../../services/fetch/fetch";
+import { connect } from "react-redux";
+import { actionCreators } from "../../../store/EaAccounts";
 
-const AddEaAccount:FunctionComponent = () => {
+type AddEaAccountProps = any;
+
+const AddEaAccount: FunctionComponent<AddEaAccountProps> = (props) => {
+    const { onAddEaAccounts } = props;
     const [eaAccount, setEaAccount] = useState({} as EaAccount);
     const [securityCode, setSecurityCode] = useState("");
     const [loginStatus, setLoginStatus] = useState(0 as LoginStatus);
+    const [isResendingCode, setIsResendingCode] = useState(false);
     const history = useHistory();
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -18,8 +24,14 @@ const AddEaAccount:FunctionComponent = () => {
         e.preventDefault();
         debugger;
         post<LoginStatus>("/api/eaaccounts/add", eaAccount)
-            .then(loginStatus => setLoginStatus(loginStatus));
-        //onAddEaAccount(eaAccount);
+            .then(loginStatus => {
+                debugger;
+                setLoginStatus(loginStatus)
+
+                if (loginStatus === 1)
+                    onAddEaAccounts(eaAccount);
+                history.push(`/ea/account/${eaAccount.username}`)
+            });
     }
 
     const onSecurityCodeChanged = (e: ChangeEvent<HTMLInputElement>) => {
@@ -29,11 +41,22 @@ const AddEaAccount:FunctionComponent = () => {
     const onSecurityCodeSubmit = (e: FormEvent<HTMLButtonElement>) => {
         e.preventDefault();
 
-        post<LoginStatus>("api/eaaccounts/securitycode", securityCode)
+        post<LoginStatus>("/api/eaaccounts/securitycode", securityCode)
             .then(loginStatus => setLoginStatus(loginStatus));
 
-        if (loginStatus === 1)
+        if (loginStatus === 1) {
             history.push(`/ea/account/${eaAccount.username}`);
+            onAddEaAccounts(eaAccount);
+        }
+    }
+
+    const onResubmitSecurityCode = (e: FormEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+
+        post<LoginStatus>("/api/eaaccounts/resendsecuritycode", securityCode)
+            .then(loginStatus => setLoginStatus(loginStatus));
+
+        setIsResendingCode(true);
     }
 
     return <>
@@ -59,10 +82,22 @@ const AddEaAccount:FunctionComponent = () => {
                     label="Security code"
                     name="securityCode"
                     placeholder="Enter security code" />
-                <button className="btn btn-primary" onSubmit={onSecurityCodeSubmit}>Submit</button>
+                <button className="btn btn-primary" onClick={onSecurityCodeSubmit}>Submit</button>
+                <button className="btn btn-primary" onClick={onResubmitSecurityCode}>Resend security code</button>
+                {isResendingCode && <label>
+                        Security code resend successfully!
+                    </label>}
             </>
             : <></>}
     </>
 }
 
-export default AddEaAccount;
+const mapDispatchToProps = (dispatch: any) => {
+    return {
+        onAddEaAccounts: (eaAccount: EaAccount) => {
+            dispatch(actionCreators.addEaAccount(eaAccount));
+        }
+    }
+}
+
+export default connect(null, mapDispatchToProps)(AddEaAccount);

@@ -43,7 +43,7 @@ namespace FutbotReact.Helpers.Attributes
             {
                 var username = (handler.ReadToken(token) as JwtSecurityToken).Claims.FirstOrDefault(claim => claim.Type.Contains("name")).Value;
                 var user = _dbService.FindByUsernameAsync(username).GetAwaiter().GetResult();
-                if (user.RefreshTokens.Any(rt => rt == token))
+                if (user.RefreshTokens.Any(rt => ValidateToken(rt)))
                 {
                     var jwtToken = user.GenerateJwtToken();
                     accessSecToken = user.GenerateJwtToken();

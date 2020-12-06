@@ -31,6 +31,11 @@ export const enum LoginStatus {
     WrongCredentials
 }
 
+export interface BidPlayerDTO {
+    name: string,
+    maxPrice: number
+}
+
 
 //export type {
 //    User,

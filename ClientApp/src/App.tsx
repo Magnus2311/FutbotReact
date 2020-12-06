@@ -12,6 +12,7 @@ import { User } from './interfaces/Models';
 import Index from './components/Pages/Auth/Index';
 import AddEaAccount from './components/Pages/EaAccounts/AddEaAccount';
 import AllEaAccouts from './components/Pages/EaAccounts/AllEaAccouts';
+import IndexEaAccount from './components/Pages/EaAccounts/Index';
 import { connect } from 'react-redux';
 import * as eaAccountsActions from "./store/EaAccounts"
 
@@ -28,9 +29,10 @@ const App: React.FunctionComponent<any> = ({onLoadUser}) => {
             <AuthenticatedRoute Component={Index} exact path="/auth/index" />
             <AuthenticatedRoute Component={AddEaAccount} exact path="/ea/add" />
             <AuthenticatedRoute Component={AllEaAccouts} exact path="/ea/all" />
+            <AuthenticatedRoute Component={IndexEaAccount} exact path="/ea/account/:username" />
             <Route path='/auth/registration' component={Registration} />
             <Route path='/auth/login' component={Login} />
-            </Layout>
+        </Layout>
     </AuthContext.Provider>;
 }
 

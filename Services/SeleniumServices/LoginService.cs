@@ -4,6 +4,7 @@ using FutbotReact.Models.DTOs;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using System;
+using System.Threading;
 
 namespace FutbotReact.Services.SeleniumServices
 {
@@ -18,7 +19,8 @@ namespace FutbotReact.Services.SeleniumServices
         {
             _driver.Navigate().GoToUrl(@"https://www.ea.com/fifa/ultimate-team/web-app/");
 
-            var startButton = _driver.FindElement(By.ClassName("btn-standard"), 10);
+            var startButton = _driver.FindElement(By.ClassName("btn-standard"), 13);
+            Thread.Sleep(1000);
             if (startButton == null)
                 return LoginStatus.Logged;
             startButton.Click();
@@ -41,6 +43,11 @@ namespace FutbotReact.Services.SeleniumServices
             _driver.FindElementById("oneTimeCode").SendKeys(securityCode);
             _driver.FindElementById("btnSubmit").Click();
             return LoginStatus.Logged;
+        }
+
+        internal void ResendSecurityCode()
+        {
+            _driver.FindElementById("resend_link").Click();
         }
     }
 }

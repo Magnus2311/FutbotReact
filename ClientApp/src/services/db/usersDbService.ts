@@ -25,21 +25,20 @@ export function login(user: User): Promise<boolean> {
         },
         body: JSON.stringify(user),
     }).then(async (response: Response) => {
-        debugger;
         var isSuccessful = response.status == 200;
         var loginResponse: LoginResponse = {
             isSuccessful: isSuccessful,
             token: JSON.parse(await response.text())
         }
         return loginResponse;
-    }).catch(error => {
-        throw error;
     }).then((loginResponse: LoginResponse) => {
         if (loginResponse.isSuccessful)
             toast.success("You've logged in successfully!");
         else
             toast.error("Login failed! Check your credentials!");
         return loginResponse.isSuccessful;
+    }).catch(() => {
+        return false;
     });
 }
 
