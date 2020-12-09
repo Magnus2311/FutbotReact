@@ -3,11 +3,8 @@ using FutbotReact.Models.DTOs;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace FutbotReact.Services.SeleniumServices
 {
@@ -22,21 +19,22 @@ namespace FutbotReact.Services.SeleniumServices
 
         public void BidPlayer(BidPlayerDTO bidPlayerDTO)
         {
-            var transferMenu = _chromeDriver.FindElementByClassName("icon-transfer");
-            transferMenu.Click();
-            Thread.Sleep(1000);
-            var searchTransfer = _chromeDriver.FindElement(By.ClassName("ut-tile-transfer-market"), 4);
-            searchTransfer.Click();
-            Thread.Sleep(1000);
+            _chromeDriver.OpenSearchTransferMarket();
+
             var nameInput = _chromeDriver.FindElement(By.ClassName("ut-text-input-control"), 3);
             nameInput.SendKeys(bidPlayerDTO.Name);
+            Thread.Sleep(500);
+            var selectPlayer = _chromeDriver.FindElementByClassName("playerResultsList").FindElement(By.CssSelector("button"));
+            selectPlayer.Click();
             Thread.Sleep(1000);
             var priceElements = _chromeDriver.FindElementsByClassName("numericInput");
             var maxBidPriceElement = priceElements[1];
+            maxBidPriceElement.Clear();
             maxBidPriceElement.SendKeys(bidPlayerDTO.MaxPrice.ToString());
             Thread.Sleep(1000);
             var searchButton = _chromeDriver.FindElementByClassName("call-to-action");
             searchButton.Click();
+            Thread.Sleep(4000);
 
             List<IWebElement> players;
             do
@@ -51,7 +49,8 @@ namespace FutbotReact.Services.SeleniumServices
             foreach (var player in players)
             {
                 player.Click();
-                var isPeriodTooLong = !_chromeDriver.FindElementByClassName("subContent").Text.Contains("Hour");
+                var period = _chromeDriver.FindElementByClassName("subContent").Text;
+                var isPeriodTooLong = period.Contains("Hour");
                 if (isPeriodTooLong) return false;
 
                 int.TryParse(_chromeDriver.FindElementByClassName("currency-coins").Text, out int currentPrice);
@@ -59,6 +58,14 @@ namespace FutbotReact.Services.SeleniumServices
                     continue;
 
                 var inputPrice = _chromeDriver.FindElementByClassName("numericInput");
+                inputPrice.Clear();
+                inputPrice.SendKeys(Keys.Backspace);
+                inputPrice.SendKeys(Keys.Backspace);
+                inputPrice.SendKeys(Keys.Backspace);
+                inputPrice.SendKeys(Keys.Backspace);
+                inputPrice.SendKeys(Keys.Backspace);
+                inputPrice.SendKeys(Keys.Backspace);
+                inputPrice.SendKeys(Keys.Backspace);
                 inputPrice.SendKeys(bidPlayerDTO.MaxPrice.ToString());
                 var bidButton = _chromeDriver.FindElementByClassName("bidButton");
                 bidButton.Click();

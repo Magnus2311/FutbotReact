@@ -14,10 +14,7 @@ namespace FutbotReact.Services.DbServices
         private readonly LoggerDbService _logger;
 
         public UsersDbService()
-        {
-            _collection = _db.GetCollection<User>(DatabaseCollections.Users);
-
-        }
+            => _collection = _db.GetCollection<User>(DatabaseCollections.Users);
 
         public UsersDbService(HashPassword hasher,
             LoggerDbService logger) : this()

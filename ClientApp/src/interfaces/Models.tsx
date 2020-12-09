@@ -31,9 +31,25 @@ export const enum LoginStatus {
     WrongCredentials
 }
 
+export enum SellDuration {
+    OneHour,
+    ThreeHours,
+    SixHours,
+    TwelveHours,
+    OneDay,
+    ThreeDays
+}
+
 export interface BidPlayerDTO {
     name: string,
     maxPrice: number
+}
+
+export interface SellPlayerDTO {
+    name: string,
+    bidPrice: number,
+    binPrice: number,
+    duration: SellDuration
 }
 
 
