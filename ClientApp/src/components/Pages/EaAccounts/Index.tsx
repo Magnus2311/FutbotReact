@@ -39,19 +39,19 @@ const Index: FunctionComponent<Props> = (props) => {
     const handleBidPlayer = (e: FormEvent<HTMLButtonElement>) => {
         e.preventDefault();
 
-        post("/api/bidding", bidPlayer);
+        post("/api/bidding", bidPlayer).catch((error) => console.log(error));
     }    
     
     const handleSellPlayer = (e: FormEvent<HTMLButtonElement>) => {
         e.preventDefault();
 
-        post("/api/selling", sellPlayer);
+        post("/api/selling", sellPlayer).catch((error) => console.log(error));
     }
     
     const handleRelistAll = (e: FormEvent<HTMLButtonElement>) => {
         e.preventDefault();
 
-        get("/api/relist");
+        get("/api/relist").catch((error) => console.log(error));
     }
 
     const handleDurationChanged = (event: ChangeEvent<HTMLSelectElement>) => {

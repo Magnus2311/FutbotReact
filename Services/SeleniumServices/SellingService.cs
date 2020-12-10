@@ -38,7 +38,15 @@ namespace FutbotReact.Services.SeleniumServices
                 var bidPriceInput = pricesInputs.FirstOrDefault();
                 var binPriceInput = pricesInputs.LastOrDefault();
 
-                bidPriceInput.SendKeys(Keys.Backspace);
+                try
+                {
+                    bidPriceInput.SendKeys(Keys.Backspace);
+                }
+                catch
+                {
+                    Thread.Sleep(3000);
+                    bidPriceInput.SendKeys(Keys.Backspace);
+                }
                 bidPriceInput.SendKeys(Keys.Backspace);
                 bidPriceInput.SendKeys(Keys.Backspace);
                 bidPriceInput.SendKeys(Keys.Backspace);
@@ -58,33 +66,33 @@ namespace FutbotReact.Services.SeleniumServices
                 binPriceInput.SendKeys(Keys.Backspace);
                 binPriceInput.SendKeys(sellPlayer.BinPrice.ToString());
 
-                var durationCombo = _chromeDriver.FindElementByClassName("ut-drop-down-control");
-                durationCombo.Click();
-                Thread.Sleep(654);
+                // var durationCombo = _chromeDriver.FindElementByClassName("ut-drop-down-control");
+                // durationCombo.Click();
+                // Thread.Sleep(654);
 
-                var durationOptions = durationCombo.FindElements(By.CssSelector("li"));
+                // var durationOptions = durationCombo.FindElements(By.CssSelector("li"));
 
-                switch (sellPlayer.SellDuration)
-                {
-                    case SellDuration.OneHour:
-                        durationOptions[0].Click();
-                        break;
-                    case SellDuration.ThreeHours:
-                        durationOptions[1].Click();
-                        break;
-                    case SellDuration.SixHours:
-                        durationOptions[2].Click();
-                        break;
-                    case SellDuration.TwelveHours:
-                        durationOptions[3].Click();
-                        break;
-                    case SellDuration.OneDay:
-                        durationOptions[4].Click();
-                        break;
-                    case SellDuration.ThreeDays:
-                        durationOptions[5].Click();
-                        break;
-                }
+                // switch (sellPlayer.SellDuration)
+                // {
+                //     case SellDuration.OneHour:
+                //         durationOptions[0].Click();
+                //         break;
+                //     case SellDuration.ThreeHours:
+                //         durationOptions[1].Click();
+                //         break;
+                //     case SellDuration.SixHours:
+                //         durationOptions[2].Click();
+                //         break;
+                //     case SellDuration.TwelveHours:
+                //         durationOptions[3].Click();
+                //         break;
+                //     case SellDuration.OneDay:
+                //         durationOptions[4].Click();
+                //         break;
+                //     case SellDuration.ThreeDays:
+                //         durationOptions[5].Click();
+                //         break;
+                // }
 
                 _chromeDriver.FindElementByClassName("panelActions").FindElement(By.ClassName("call-to-action")).Click();
 

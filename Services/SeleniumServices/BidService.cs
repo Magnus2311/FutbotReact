@@ -48,6 +48,9 @@ namespace FutbotReact.Services.SeleniumServices
         {
             foreach (var player in players)
             {
+                var classes = player.GetAttribute("class").Split(" ").ToList();
+                if (classes.Contains("highest-bid")) continue;
+
                 player.Click();
                 var period = _chromeDriver.FindElementByClassName("subContent").Text;
                 var isPeriodTooLong = period.Contains("Hour");
