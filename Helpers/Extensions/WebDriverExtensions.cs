@@ -36,6 +36,9 @@ namespace FutbotReact.Helpers.Extensions
             var searchTransfer = driver.FindElement(By.ClassName("ut-tile-transfer-market"), 4);
             searchTransfer.Click();
             Thread.Sleep(1000);
+            var clearParents = driver.FindElements(By.ClassName("search-price-header"), 5);
+            foreach (var clearParent in clearParents)
+                clearParent.FindElement(By.ClassName("flat")).Click();
         }
 
         public static void OpenTransferTargets(this IWebDriver driver)

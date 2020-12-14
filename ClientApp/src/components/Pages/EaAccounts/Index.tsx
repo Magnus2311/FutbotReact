@@ -66,6 +66,7 @@ const Index: FunctionComponent<Props> = (props) => {
         <TextBox name="maxPrice" placeholder="Enter max price" label="Max price" value={bidPlayer.maxPrice.toString()} handleChange={handleBidPlayerChange} />
         <button className="btn btn-primary btn-xl" onClick={handleBidPlayer}>Bid player</button>
         <hr/>
+        <h3>Sell player</h3>
         <TextBox name="name" placeholder="Enter player name" label="Player name" value={sellPlayer.name} handleChange={handleSellPlayerChange} />
         <TextBox name="bidPrice" placeholder="Enter bid price" label="Bin price" value={sellPlayer.bidPrice.toString()} handleChange={handleSellPlayerChange} />
         <TextBox name="binPrice" placeholder="Enter bin price" label="Bid price" value={sellPlayer.binPrice.toString()} handleChange={handleSellPlayerChange} />
@@ -78,6 +79,8 @@ const Index: FunctionComponent<Props> = (props) => {
             <option value={5}>Three days</option>
         </select>
         <button className="btn btn-primary btn-xl" style={{marginTop: "15px"}} onClick={handleSellPlayer}>Sell player</button>
+        <hr />
+        <h3>Quick buy player</h3>
         <hr />
         <button className="btn btn-primary btn-xl" style={{marginTop: "15px"}} onClick={handleRelistAll}>Relist all</button>
     </div>
