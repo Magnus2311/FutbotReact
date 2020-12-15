@@ -1,5 +1,7 @@
-﻿using FutbotReact.Helpers.Extensions;
+﻿using System;
+using FutbotReact.Helpers.Extensions;
 using FutbotReact.Models.DTOs;
+using FutbotReact.Services.SeleniumServices.Helpers;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using System.Collections.Generic;
@@ -12,12 +14,13 @@ namespace FutbotReact.Services.SeleniumServices
     {
         private readonly ChromeDriver _chromeDriver;
         private readonly ClearTargetList _clearTargetList;
-        private bool _isTransferListFull;
+        private readonly PlayersHelper _playersHelper;
 
         public BidService(ChromeDriver chromeDriver)
         {
             _chromeDriver = chromeDriver;
             _clearTargetList = new ClearTargetList();
+            _playersHelper = new PlayersHelper(_chromeDriver);
         }
 
         public void BidPlayer(BidPlayerDTO bidPlayerDTO)
@@ -42,9 +45,15 @@ namespace FutbotReact.Services.SeleniumServices
             List<IWebElement> players;
             do
             {
-                players = InitPlayers();
+                players = _playersHelper.InitPlayers();
             }
             while (PlaceBid(players, bidPlayerDTO));
+
+            do
+            {
+                players = _playersHelper.InitTargetListOutbidBidPlayers();
+            }
+            while (PlaceBidActivePlayers(players, bidPlayerDTO));
         }
 
         private bool PlaceBid(List<IWebElement> players, BidPlayerDTO bidPlayerDTO)
@@ -62,7 +71,7 @@ namespace FutbotReact.Services.SeleniumServices
                         okButton.Click();
                         Thread.Sleep(840);
 
-                        if (_clearTargetList.TryClearTargetList(_chromeDriver))
+                        if (_clearTargetList.TryClearTargetList(_chromeDriver, bidPlayerDTO))
                             BidPlayer(bidPlayerDTO);
                         return false;
                     }
@@ -75,20 +84,20 @@ namespace FutbotReact.Services.SeleniumServices
                     var isPeriodTooLong = !period.Contains("Minute");
                     if (isPeriodTooLong) return false;
 
-                    int.TryParse(_chromeDriver.FindElementByClassName("currency-coins").Text, out int currentPrice);
+                    int.TryParse(_chromeDriver.FindElementByClassName("auctionInfo").FindElement(By.ClassName("currency-coins")).Text, out int currentPrice);
                     if (currentPrice > bidPlayerDTO.MaxPrice)
                         continue;
 
-                    var inputPrice = _chromeDriver.FindElementByClassName("numericInput");
-                    inputPrice.Clear();
-                    inputPrice.SendKeys(Keys.Backspace);
-                    inputPrice.SendKeys(Keys.Backspace);
-                    inputPrice.SendKeys(Keys.Backspace);
-                    inputPrice.SendKeys(Keys.Backspace);
-                    inputPrice.SendKeys(Keys.Backspace);
-                    inputPrice.SendKeys(Keys.Backspace);
-                    inputPrice.SendKeys(Keys.Backspace);
-                    inputPrice.SendKeys(bidPlayerDTO.MaxPrice.ToString());
+                    // var inputPrice = _chromeDriver.FindElementByClassName("numericInput");
+                    // inputPrice.Clear();
+                    // inputPrice.SendKeys(Keys.Backspace);
+                    // inputPrice.SendKeys(Keys.Backspace);
+                    // inputPrice.SendKeys(Keys.Backspace);
+                    // inputPrice.SendKeys(Keys.Backspace);
+                    // inputPrice.SendKeys(Keys.Backspace);
+                    // inputPrice.SendKeys(Keys.Backspace);
+                    // inputPrice.SendKeys(Keys.Backspace);
+                    // inputPrice.SendKeys(bidPlayerDTO.MaxPrice.ToString());
                     var bidButton = _chromeDriver.FindElementByClassName("bidButton");
                     bidButton.Click();
                     Thread.Sleep(2000);
@@ -109,13 +118,44 @@ namespace FutbotReact.Services.SeleniumServices
             }
             catch
             {
-                players = InitPlayers();
+                players = _playersHelper.InitPlayers();
                 PlaceBid(players, bidPlayerDTO);
                 return true;
             }
         }
 
-        private List<IWebElement> InitPlayers()
-            => _chromeDriver.FindElementsByClassName("listFUTItem").ToList();
+        public bool PlaceBidActivePlayers(List<IWebElement> players, BidPlayerDTO bidPlayerDTO)
+        {
+            if (!players.Any()) return false;
+
+            try
+            {
+                foreach (var player in players)
+                {
+                    player.Click();
+                    var classes = player.GetAttribute("class").Split(" ").ToList();
+                    if (classes.Contains("outbid"))
+                    {
+                        Thread.Sleep(500);
+                        var auctionInfo = _chromeDriver.FindElement(By.ClassName("currentBid"));
+                        var currentValueStr = auctionInfo.FindElement(By.ClassName("currency-coins")).Text;
+                        int.TryParse(currentValueStr, out var currentValue);
+
+                        if (currentValue >= bidPlayerDTO.MaxPrice)
+                            auctionInfo.FindElement(By.ClassName("watch")).Click();
+                        else
+                            _chromeDriver.FindElement(By.ClassName("bidButton")).Click();
+                    }
+                    Thread.Sleep(1734);
+                }
+            }
+            catch (Exception ex)
+            {
+                players = _playersHelper.InitTargetListOutbidBidPlayers();
+                PlaceBidActivePlayers(players, bidPlayerDTO);
+            }
+
+            return true;
+        }
     }
 }

@@ -52,7 +52,7 @@ namespace FutbotReact.Controllers
 
         [HttpPost("securitycode")]
         [Authorize]
-        public async Task<IActionResult> SubmitSecurityCode(string securityCode)
+        public IActionResult SubmitSecurityCode(string securityCode)
         {
             LoginStatus loginStatus = LoginStatus.Unknown;
             var user = HttpContext.Items["User"] as User;

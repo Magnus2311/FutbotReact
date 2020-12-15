@@ -7,6 +7,6 @@ namespace FutbotReact.Models
         public string Name { get; set; }
         public int BidPrice { get; set; }
         public int BinPrice { get; set; }
-        public SellDuration SellDuration { get; set; }
+        public int Duration { get; set; }
     }
 }
