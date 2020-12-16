@@ -1,8 +1,10 @@
+import { debug } from 'console';
 import { stat } from 'fs';
 import { toast } from 'react-toastify';
 import { Action, Reducer } from 'redux';
 import { AppThunk } from '.';
 import { EaAccount, User } from '../interfaces/Models';
+import { get } from '../services/fetch/fetch';
 
 export interface EaAccountsState {
     eaAccounts: EaAccount[];
@@ -29,21 +31,22 @@ export const actionCreators = {
                 },
                 body: JSON.stringify(eaAccount)
             }).then(response => {
+                debugger;
                 if (response.status === 200) {
                     dispatch<any>(addEaAccountSuccess(eaAccount));
                 } else {
                     toast.error("Adding EA account failed! Try again!");
-                    dispatch<any>(addEaAccountSuccess(eaAccount));
                 }
             }).catch(error => {
+                debugger;
                 toast.error("Adding EA account failed! Try again!" + error);
-                dispatch<any>(addEaAccountSuccess(eaAccount));
             });
         }
     },
-    loadEaAccounts: (user: User): AppThunk<void, KnownAction> => {
+    loadEaAccounts: (): AppThunk<void, KnownAction> => {
         return (dispatch) => {
-            dispatch<any>(loadEaAccountsSuccess(user.eaAccounts));
+            get<EaAccount[]>("api/eaaccounts/get")
+            .then(eaAccounts => dispatch<any>(loadEaAccountsSuccess(eaAccounts)));
         }
     }
 };
@@ -52,6 +55,9 @@ export const reducer: Reducer<EaAccountsState> = (state: EaAccountsState | undef
     if (state === undefined) {
         return { eaAccounts: [] };
     }
+
+    if (state.eaAccounts === undefined)
+        state.eaAccounts = [];
 
     const action = incomingAction as KnownAction;
     switch (action.type) {

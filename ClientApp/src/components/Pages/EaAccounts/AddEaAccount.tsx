@@ -28,6 +28,7 @@ const AddEaAccount: FunctionComponent<AddEaAccountProps> = (props) => {
                 debugger;
                 setLoginStatus(loginStatus)
 
+                debugger;
                 if (loginStatus === 1)
                     onAddEaAccounts(eaAccount);
                 history.push(`/ea/account/${eaAccount.username}`)

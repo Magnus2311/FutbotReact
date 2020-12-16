@@ -130,7 +130,7 @@ namespace FutbotReact.Services.SeleniumServices
 
             try
             {
-                foreach (var player in players)
+                foreach (var player in players.Where(p => p.GetAttribute("class").Split(" ").Contains("outbid")))
                 {
                     player.Click();
                     var classes = player.GetAttribute("class").Split(" ").ToList();
@@ -142,9 +142,9 @@ namespace FutbotReact.Services.SeleniumServices
                         int.TryParse(currentValueStr, out var currentValue);
 
                         if (currentValue >= bidPlayerDTO.MaxPrice)
-                            auctionInfo.FindElement(By.ClassName("watch")).Click();
+                            _chromeDriver.FindElement(By.ClassName("watch"), 5).Click();
                         else
-                            _chromeDriver.FindElement(By.ClassName("bidButton")).Click();
+                            _chromeDriver.FindElement(By.ClassName("bidButton"), 5).Click();
                     }
                     Thread.Sleep(1734);
                 }

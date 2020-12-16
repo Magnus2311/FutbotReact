@@ -8,7 +8,7 @@ type AllEaAccountsProps = EaAccountsState
 
 const AllEaAccounts: FunctionComponent<AllEaAccountsProps> = ({ eaAccounts }) => {
     const history = useHistory();
-
+    debugger;
     const handleEaAccountSelected = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         history.push(`/ea/account/${e.currentTarget.accessKey}`)
     }

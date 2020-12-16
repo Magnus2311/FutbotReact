@@ -50,6 +50,11 @@ namespace FutbotReact.Controllers
             return Ok(loginStatus);
         }
 
+        [HttpGet("get")]
+        [Authorize]
+        public IActionResult Get()
+            => Ok((HttpContext.Items["User"] as User).EaAccounts);
+
         [HttpPost("securitycode")]
         [Authorize]
         public IActionResult SubmitSecurityCode(string securityCode)

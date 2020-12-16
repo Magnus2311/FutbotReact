@@ -1,0 +1,16 @@
+.container {
+  display: grid;
+  place-items: center;
+}
+
+.mag-item {
+  cursor: pointer;
+  border: rgba(0, 0, 0, 0.3) solid 2px;
+  border-radius: 15px;
+  padding: 10px 20px;
+}
+
+.mag-item:hover {
+  color: white;
+  background-color: rgba(0, 0, 0, 0.15);
+}

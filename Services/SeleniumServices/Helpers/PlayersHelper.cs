@@ -24,7 +24,7 @@ namespace FutbotReact.Services.SeleniumServices.Helpers
         {
             var activeBids = _chromeDriver.FindElements(By.ClassName("sectioned-item-list"), 10).FirstOrDefault();
             var itemList = activeBids.FindElement(By.ClassName("itemList"));
-            return new List<IWebElement>(itemList.FindElements(By.ClassName("listFUTItem")).Where(p => p.GetAttribute("class").Split(" ").Contains("outbid")));
+            return new List<IWebElement>(itemList.FindElements(By.ClassName("listFUTItem")));
         }
 
         public void ClearOverPricedPlayers(List<IWebElement> players, BidPlayerDTO bidPlayerDTO)
