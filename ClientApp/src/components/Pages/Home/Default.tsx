@@ -1,30 +1,36 @@
 import React, { FunctionComponent } from "react";
 import { useHistory } from "react-router";
 import { EaAccount } from "../../../interfaces/Models";
+import AddEaAccount from "../EaAccounts/AddEaAccount";
 
 type HomeDefaultProps = {
-    eaAccounts: any
+  eaAccounts: any;
 };
 
 const Default: FunctionComponent<HomeDefaultProps> = ({ eaAccounts }) => {
-    const history = useHistory();
+  const history = useHistory();
 
-    const handleEaAccountClick = (e: React.MouseEvent<HTMLDivElement>) => {
-        debugger;
-        history.push(`/ea/account/${e.currentTarget.innerText}`);
-    };
+  const handleEaAccountClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    debugger;
+    history.push(`/ea/account/${e.currentTarget.innerText}`);
+  };
 
-    return (eaAccounts.map((eaAccount: EaAccount) => {
+  return (
+    <>
+      {eaAccounts.map((eaAccount: EaAccount) => {
         return (
-            <div
-                className="btn btn-dark"
-                onClick={handleEaAccountClick}
-                key={eaAccount.username}
-            >
-                {eaAccount.username}
-            </div>
+          <button
+            className="fut-btn"
+            onClick={handleEaAccountClick}
+            key={eaAccount.username}
+          >
+            {eaAccount.username}
+          </button>
         );
-    }));
+      })}
+      <AddEaAccount />
+    </>
+  );
 };
 
 export default Default;

@@ -45,7 +45,6 @@ namespace FutbotReact.Helpers.Attributes
                 var user = _dbService.FindByUsernameAsync(username).GetAwaiter().GetResult();
                 if (user.RefreshTokens.Any(rt => ValidateToken(rt)))
                 {
-                    var jwtToken = user.GenerateJwtToken();
                     accessSecToken = user.GenerateJwtToken();
                     SetAccessToken(accessSecToken, context);
                     context.HttpContext.Items["User"] = user;
@@ -53,7 +52,7 @@ namespace FutbotReact.Helpers.Attributes
                 }
             }
 
-            context.Result = new JsonResult(new { message = "Unauthorized" }) { StatusCode = StatusCodes.Status401Unauthorized };
+            context.Result = new UnauthorizedResult();
         }
 
         private bool ValidateToken(string authToken)

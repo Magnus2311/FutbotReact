@@ -16,8 +16,8 @@ namespace FutbotReact.Controllers
         public IActionResult RelistAll()
         {
             var user = HttpContext.Items["User"] as User;
-            ChromeInstances.Instance.Add(user.Username);
-            var chromeDriver = ChromeInstances.Instance.ChromeDrivers[user.Username];
+            throw new System.Exception("Should be passed ea account username");
+            var chromeDriver = ChromeInstances.Instance.Add(user.Username);
             new RelistService(chromeDriver).RelistAll();
             return Ok();
         }
@@ -25,9 +25,7 @@ namespace FutbotReact.Controllers
         [HttpPost("relistplayer")]
         public IActionResult RelistPlayer(SellPlayerDTO sellPlayerDTO)
         {
-            var user = HttpContext.Items["User"] as User;
-            ChromeInstances.Instance.Add(user.Username);
-            var chromeDriver = ChromeInstances.Instance.ChromeDrivers[user.Username];
+            var chromeDriver = ChromeInstances.Instance.Add(sellPlayerDTO.Username);
             new RelistService(chromeDriver).RelistPlayer(sellPlayerDTO);
             return Ok();
         }

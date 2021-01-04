@@ -1,5 +1,4 @@
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 using FutbotReact.Helpers;
 using FutbotReact.Helpers.Attributes;
@@ -30,8 +29,7 @@ namespace FutbotReact.Controllers
         {
             LoginStatus loginStatus = LoginStatus.Unknown;
             var user = HttpContext.Items["User"] as User;
-            ChromeInstances.Instance.Add(user.Username);
-            var chromeDriver = ChromeInstances.Instance.ChromeDrivers[user.Username];
+            var chromeDriver = ChromeInstances.Instance.Add(eaAccount.Username);
             try
             {
                 loginStatus = new LoginService(chromeDriver).Start(new Models.DTOs.LoginDTO { Username = eaAccount.Username, Password = eaAccount.Password });

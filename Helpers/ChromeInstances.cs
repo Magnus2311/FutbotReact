@@ -14,15 +14,18 @@ namespace FutbotReact.Helpers
         {
         }
 
-        public bool Add(string username)
+        public ChromeDriver Add(string username)
         {
-            if (ChromeDrivers.ContainsKey(username)) return true;
+            if (ChromeDrivers.ContainsKey(username)) return ChromeDrivers[username];
 
             var chromeOptions = new ChromeOptions();
             chromeOptions.AddArguments("--disable-backgrounding-occluded-windows");
-            var a = @$"user-data-dir={Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\Google\Chrome\User Data\{username.Split("@").FirstOrDefault()}\Default";
-            chromeOptions.AddArgument(a);
-            return ChromeDrivers.TryAdd(username, new ChromeDriver(chromeOptions));
+            chromeOptions.AddArgument(@$"user-data-dir={Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)}\Google\Chrome\User Data\{username.Split("@").FirstOrDefault()}\Default");
+
+            var chromeDriver = new ChromeDriver(chromeOptions);
+            if (ChromeDrivers.TryAdd(username, chromeDriver)) return chromeDriver;
+
+            return null;
         }
     }
 }

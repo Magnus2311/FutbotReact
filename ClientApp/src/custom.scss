@@ -1,0 +1,108 @@
+@media (prefers-color-scheme: dark) {
+  body {
+    --text-color: #fff;
+    --bkg-color: #212121;
+    --btn-border-color: #323232;
+    --form-control-bkg-color: #323232;
+    --form-control-border-color: #323232;
+  }
+
+  body.light-theme {
+    --text-color: #222;
+    --bkg-color: #fff;
+    --btn-border-color: #007bff;
+    --form-control-bkg-color: #fff;
+    --form-control-border-color: #fff;
+  }
+
+  .fut-btn:hover {
+    --bkg-color: #323232 !important;
+  }
+
+  body {
+    background-color: var(--bkg-color);
+    color: var(--text-color);
+  }
+
+  .navbar-light > .container {
+    a {
+      color: var(--text-color) !important;
+    }
+
+    div > .navbar-nav > li {
+      :hover {
+        background-color: var(--btn-border-color) !important;
+      }
+    }
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  body {
+    --text-color: #222;
+    --bkg-color: #fff;
+    --btn-border-color: #007bff;
+    --form-control-bkg-color: #fff;
+    --form-control-border-color: #fff;
+  }
+
+  body.dark-theme {
+    --text-color: #eee;
+    --bkg-color: #121212;
+  }
+
+  .fut-btn {
+    --text-color: #fff;
+    --bkg-color: #007bff;
+  }
+
+  .fut-btn:hover {
+    --bkg-color: #0062cc;
+    --btn-border-color: #005cbf;
+  }
+}
+
+.fut-btn {
+  border: 1px solid transparent;
+  margin: 1rem 0 0 0;
+  color: var(--text-color);
+  background-color: var(--bkg-color);
+  border-color: var(--btn-border-color);
+  display: inline-block;
+  font-weight: 400;
+  text-align: center;
+  vertical-align: middle;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+    border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.form-control {
+  background-color: var(--form-control-bkg-color);
+  border-color: var(--form-control-border-color);
+  color: var(--text-color);
+
+  ::placeholder {
+    color: var(--text-color) !important;
+    opacity: 1;
+  }
+
+  ::-ms-input-placeholder {
+    color: var(--text-color) !important;
+  }
+
+  :focus {
+    color: var(--text-color);
+    background-color: var(--bkg-color);
+    border-color: var(--btn-border-color);
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  }
+}
