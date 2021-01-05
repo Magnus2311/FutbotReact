@@ -1,3 +1,24 @@
+@mixin placeholder {
+  ::-webkit-input-placeholder {
+    @content;
+  }
+  :-moz-placeholder {
+    @content;
+  }
+  ::-moz-placeholder {
+    @content;
+  }
+  :-ms-input-placeholder {
+    @content;
+  }
+}
+
+@include placeholder {
+  font-style: italic;
+  color: white !important;
+  font-weight: 400;
+}
+
 @media (prefers-color-scheme: dark) {
   body {
     --text-color: #fff;
@@ -88,21 +109,27 @@
   background-color: var(--form-control-bkg-color);
   border-color: var(--form-control-border-color);
   color: var(--text-color);
+}
+.form-control:focus {
+  color: var(--text-color);
+  background-color: var(--bkg-color);
+  border-color: var(--btn-border-color);
+  outline: 0;
+  box-shadow: 0 0 0 0.25rem #323232;
 
-  ::placeholder {
-    color: var(--text-color) !important;
-    opacity: 1;
+  @include placeholder {
+    color: red !important;
   }
+}
 
-  ::-ms-input-placeholder {
-    color: var(--text-color) !important;
-  }
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  box-shadow: 0 0 0 30px var(--bkg-color) inset !important;
+  -webkit-box-shadow: 0 0 0 30px var(--bkg-color) inset !important;
+}
 
-  :focus {
-    color: var(--text-color);
-    background-color: var(--bkg-color);
-    border-color: var(--btn-border-color);
-    outline: 0;
-    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-  }
+input:-webkit-autofill {
+  -webkit-text-fill-color: var(--text-color) !important;
 }
