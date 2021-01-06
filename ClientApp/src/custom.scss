@@ -105,6 +105,11 @@
     border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
+.fut-btn:focus {
+  border-color: var(--btn-border-color);
+  outline: var(--bkg-color);
+}
+
 .form-control {
   background-color: var(--form-control-bkg-color);
   border-color: var(--form-control-border-color);
@@ -115,7 +120,7 @@
   background-color: var(--bkg-color);
   border-color: var(--btn-border-color);
   outline: 0;
-  box-shadow: 0 0 0 0.25rem #323232;
+  box-shadow: 0 0 0 0.25rem var(--btn-border-color);
 
   @include placeholder {
     color: red !important;
@@ -132,4 +137,17 @@ input:-webkit-autofill:active {
 
 input:-webkit-autofill {
   -webkit-text-fill-color: var(--text-color) !important;
+}
+
+.custom-select {
+  background-color: var(--bkg-color);
+  color: var(--text-color);
+  border: var(--btn-border-color) 3px;
+  border: 1px solid var(--btn-border-color);
+}
+
+.custom-select:focus {
+  border-color: var(--btn-border-color) !important;
+  outline: var(--btn-border-color);
+  box-shadow: 0 0 0 0.25rem var(--btn-border-color);
 }
