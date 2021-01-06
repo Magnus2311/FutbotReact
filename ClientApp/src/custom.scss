@@ -157,3 +157,26 @@ input:-webkit-autofill {
   color: var(--text-color);
   border-color: var(--btn-border-color);
 }
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  text-align: center;
+}
+
+a {
+  color: var(--text-color) !important;
+}
+a:hover {
+  color: var(--text-color) !important;
+}
+
+.text-dark {
+  color: var(--text-color) !important;
+}
+.text-dark:hover {
+  color: var(--text-color) !important;
+}

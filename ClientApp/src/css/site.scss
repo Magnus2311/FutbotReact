@@ -1,6 +1,7 @@
 .container {
   display: grid;
   place-items: center;
+  width: clamp(250px, 80%, 750px);
 }
 
 .mag-item {

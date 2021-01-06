@@ -52,7 +52,13 @@ const Index: FunctionComponent<Props> = (props) => {
   };
 
   return (
-    <div>
+    <div
+      style={{
+        display: "grid",
+        placeItems: "centered",
+        width: "100%",
+      }}
+    >
       <h2 style={{ marginBottom: "1.5rem" }}>{username}</h2>
       <div
         className={`btn-group btn-group-toggle`}

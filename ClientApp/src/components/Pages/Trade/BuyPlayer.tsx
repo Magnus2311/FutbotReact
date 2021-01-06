@@ -42,7 +42,6 @@ const BuyPlayer: FunctionComponent<BuyPlayerProps> = ({
     <div
       style={{
         display: visibility ? "grid" : "none",
-        gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
       }}
     >
       <h3>Bid player</h3>

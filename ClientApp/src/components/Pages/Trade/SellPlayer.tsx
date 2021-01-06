@@ -52,7 +52,6 @@ const SellPlayer: FunctionComponent<SellPlayerProps> = ({
     <div
       style={{
         display: visibility ? "grid" : "none",
-        gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
       }}
     >
       <h3>Sell player</h3>

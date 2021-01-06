@@ -52,7 +52,6 @@ const RelistPlayer: FunctionComponent<RelistPlayerProps> = ({
     <div
       style={{
         display: visibility ? "grid" : "none",
-        gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
       }}
     >
       <h3>Relist player</h3>
