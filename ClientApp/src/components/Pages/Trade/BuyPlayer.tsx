@@ -10,6 +10,7 @@ import TextBox from "../../Common/Controls/TextBox";
 
 interface BuyPlayerProps {
   username: string;
+  visibility: boolean;
 }
 
 const emptyBid: BidPlayerDTO = {
@@ -18,7 +19,10 @@ const emptyBid: BidPlayerDTO = {
   name: "",
 };
 
-const BuyPlayer: FunctionComponent<BuyPlayerProps> = ({ username }) => {
+const BuyPlayer: FunctionComponent<BuyPlayerProps> = ({
+  username,
+  visibility,
+}) => {
   const [bidPlayer, setBidPlayer] = useState({
     ...emptyBid,
     username,
@@ -37,11 +41,10 @@ const BuyPlayer: FunctionComponent<BuyPlayerProps> = ({ username }) => {
   return (
     <div
       style={{
-        display: "grid",
+        display: visibility ? "grid" : "none",
         gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
       }}
     >
-      <hr />
       <h3>Bid player</h3>
       <TextBox
         name="name"

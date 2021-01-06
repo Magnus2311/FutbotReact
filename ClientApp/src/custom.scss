@@ -151,3 +151,9 @@ input:-webkit-autofill {
   outline: var(--btn-border-color);
   box-shadow: 0 0 0 0.25rem var(--btn-border-color);
 }
+
+.btn-secondary {
+  background-color: var(--bkg-color);
+  color: var(--text-color);
+  border-color: var(--btn-border-color);
+}

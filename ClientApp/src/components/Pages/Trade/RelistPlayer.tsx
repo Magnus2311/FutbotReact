@@ -18,9 +18,13 @@ const emptyResellPlayer: SellPlayerDTO = {
 
 interface RelistPlayerProps {
   username: string;
+  visibility: boolean;
 }
 
-const RelistPlayer: FunctionComponent<RelistPlayerProps> = ({ username }) => {
+const RelistPlayer: FunctionComponent<RelistPlayerProps> = ({
+  username,
+  visibility,
+}) => {
   const [resellPlayer, setResellPlayer] = useState({
     ...emptyResellPlayer,
     username,
@@ -47,10 +51,11 @@ const RelistPlayer: FunctionComponent<RelistPlayerProps> = ({ username }) => {
   return (
     <div
       style={{
-        display: "grid",
+        display: visibility ? "grid" : "none",
         gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
       }}
     >
+      <h3>Relist player</h3>
       <TextBox
         name="name"
         placeholder="Enter player name"

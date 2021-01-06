@@ -18,9 +18,13 @@ const emptySell: SellPlayerDTO = {
 
 interface SellPlayerProps {
   username: string;
+  visibility: boolean;
 }
 
-const SellPlayer: FunctionComponent<SellPlayerProps> = ({ username }) => {
+const SellPlayer: FunctionComponent<SellPlayerProps> = ({
+  username,
+  visibility,
+}) => {
   const [sellPlayer, setSellPlayer] = useState({
     ...emptySell,
     username,
@@ -47,7 +51,7 @@ const SellPlayer: FunctionComponent<SellPlayerProps> = ({ username }) => {
   return (
     <div
       style={{
-        display: "grid",
+        display: visibility ? "grid" : "none",
         gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
       }}
     >
