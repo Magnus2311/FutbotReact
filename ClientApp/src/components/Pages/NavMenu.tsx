@@ -29,11 +29,7 @@ const NavMenu: React.FunctionComponent = () => {
         className="navbar-expand-sm navbar-toggleable-sm border-bottom box-shadow mb-3"
         light
       >
-        <NavbarBrand
-          tag={Link}
-          to="/"
-          style={{ position: "absolute", left: "5%" }}
-        >
+        <NavbarBrand tag={Link} to="/">
           FutbotReact
         </NavbarBrand>
         <NavbarToggler onClick={toggle} className="mr-2" />
