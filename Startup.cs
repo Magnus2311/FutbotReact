@@ -43,6 +43,7 @@ namespace FutbotReact
             services.AddTransient<HashPassword>();
             services.AddTransient<ConfigureDb>();
             services.AddTransient<LoggerDbService>();
+            services.AddTransient<ActivePlayersDbService>();
         }
 
         public void Configure(IApplicationBuilder app,

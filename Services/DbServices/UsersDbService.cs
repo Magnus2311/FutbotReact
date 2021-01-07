@@ -32,7 +32,7 @@ namespace FutbotReact.Services.DbServices
 
         internal async Task UpdateEaAccounts(User user)
             => await _collection.UpdateOneAsync(
-                Builders<User>.Filter.Eq(u => u.Username, user.Username.ToUpper()),
+                Builders<User>.Filter.Eq(u => u.Username.ToUpper(), user.Username.ToUpper()),
                 Builders<User>.Update.Set(u => u.EaAccounts, user.EaAccounts)
             );
 

@@ -9,6 +9,7 @@ export interface User {
 export interface EaAccount {
   username: string;
   password: string;
+  coins: number;
 }
 
 export interface LoginResponse {
