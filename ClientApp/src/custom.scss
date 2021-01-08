@@ -26,6 +26,8 @@
     --btn-border-color: #323232;
     --form-control-bkg-color: #323232;
     --form-control-border-color: #323232;
+    --btn-color: #323232 !important;
+    --btn-active-color: #212121 !important;
   }
 
   body.light-theme {
@@ -182,9 +184,9 @@ a:hover {
   color: var(--text-color) !important;
 }
 
-.text-dark {
+a.text-dark {
   color: var(--text-color) !important;
 }
-.text-dark:hover {
+a.text-dark:hover {
   color: var(--text-color) !important;
 }

@@ -45,6 +45,9 @@ export interface BidPlayerDTO {
   username: string;
   name: string;
   maxPrice: number;
+  maxActiveBids: number;
+  isBin: boolean;
+  rating: number;
 }
 
 export interface SellPlayerDTO {
