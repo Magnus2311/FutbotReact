@@ -1,5 +1,8 @@
+using MongoDB.Bson.Serialization.Attributes;
+
 namespace FutbotReact.Models
 {
+    [BsonIgnoreExtraElements]
     public class PlayerToBuy
     {
         public PlayerToBuy(string eaAccountUsername,

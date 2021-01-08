@@ -2,6 +2,7 @@
   FormEvent,
   FunctionComponent,
   MouseEvent,
+  useEffect,
   useState,
 } from "react";
 import { RouteComponentProps } from "react-router-dom";
@@ -9,18 +10,28 @@ import { get } from "../../../services/fetch/fetch";
 import BuyPlayer from "../Trade/BuyPlayer";
 import SellPlayer from "../Trade/SellPlayer";
 import RelistPlayer from "../Trade/RelistPlayer";
+import * as activePlayersActions from "../../../store/activePlayers";
+import ActivePlayers from "../Trade/ActivePlayers";
+import { ApplicationState } from "../../../store";
+import { connect } from "react-redux";
+import { PlayerToBuy } from "../../../interfaces/Models";
 
 interface MatchParams {
   username: string;
 }
 
-interface Props extends RouteComponentProps<MatchParams> {}
+interface Props extends RouteComponentProps<MatchParams> {
+  playersToBuy: PlayerToBuy[];
+  onLoadActivePlayers: (eaAccountUsername: string) => void;
+}
 
 const Index: FunctionComponent<Props> = (props) => {
   const { username } = props.match.params;
+  const { playersToBuy, onLoadActivePlayers } = props;
   const [isBuying, setIsBuying] = useState(true);
   const [isSelling, setIsSelling] = useState(false);
   const [isRelisting, setIsRelisting] = useState(false);
+  useEffect(() => onLoadActivePlayers(username), []);
 
   const handleRelistAll = (e: FormEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -59,6 +70,11 @@ const Index: FunctionComponent<Props> = (props) => {
         width: "100%",
       }}
     >
+      <ActivePlayers
+        eaAccountUsername={username}
+        playersToBuy={playersToBuy}
+        onLoadActivePlayers={onLoadActivePlayers}
+      />
       <h2 style={{ marginBottom: "1.5rem" }}>{username}</h2>
       <div
         className={`btn-group btn-group-toggle`}
@@ -99,4 +115,16 @@ const Index: FunctionComponent<Props> = (props) => {
   );
 };
 
-export default Index;
+const mapStateToProps = (state: ApplicationState) => state.playersToBuy;
+
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    onLoadActivePlayers: (eaAccountUsername: string) => {
+      dispatch(
+        activePlayersActions.actionCreators.loadPlayersToBuy(eaAccountUsername)
+      );
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Index);

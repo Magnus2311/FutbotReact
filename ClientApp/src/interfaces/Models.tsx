@@ -58,6 +58,15 @@ export interface SellPlayerDTO {
   duration: SellDuration;
 }
 
+export interface PlayerToBuy {
+  eaAccountUsername: string;
+  name: string;
+  rating: number;
+  isBin: boolean;
+  maxActiveBids: number;
+  maxPrice: number;
+}
+
 //export type {
 //    User,
 //    EaAccount,

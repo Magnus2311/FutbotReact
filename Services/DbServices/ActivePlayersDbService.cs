@@ -9,7 +9,7 @@ namespace FutbotReact.Services.DbServices
     public class ActivePlayersDbService : BaseDbService
     {
         public IEnumerable<PlayerToBuy> GetActivePlayersToBuy(string eaAccountUsername)
-            => _db.GetCollection<PlayerToBuy>("PlayersToBuy").AsQueryable()
+            => _db.GetCollection<PlayerToBuy>("playersToBuy").AsQueryable()
                 .Where(ptb => ptb.EaAccountUsername.ToUpper() == eaAccountUsername.ToUpper());
 
         public async Task AddPlayerToBuy(PlayerToBuy playerToBuy)
