@@ -28,6 +28,9 @@
     --form-control-border-color: #323232;
     --btn-color: #323232 !important;
     --btn-active-color: #212121 !important;
+    --switch-color: #212121;
+    --switch-active-color: #323232;
+    --switch-before-color: #fff;
   }
 
   body.light-theme {
@@ -70,6 +73,9 @@
     --form-control-bkg-color: #fff;
     --form-control-border-color: #ced4da;
     --btn-text-color: #fff;
+    --switch-color: #fff;
+    --switch-active-color: #007bff;
+    --switch-before-color: #b0b4b8;
   }
 
   body.dark-theme {

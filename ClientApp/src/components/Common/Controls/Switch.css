@@ -20,8 +20,8 @@
   left: 0;
   right: 0;
   bottom: 0;
-  border: 3px solid var(--form-control-border-color);
-  background-color: var(--bkg-color);
+  border: 1px solid var(--form-control-border-color);
+  background-color: var(--switch-color);
   -webkit-transition: 0.4s;
   transition: 0.4s;
   border-radius: 5px;
@@ -33,19 +33,20 @@
   height: 15px;
   width: 5px;
   left: 3px;
-  bottom: 1px;
-  background-color: var(--text-color);
+  bottom: 3px;
+  background-color: var(--switch-before-color);
   border-radius: 3px;
   -webkit-transition: 0.4s;
   transition: 0.4s;
 }
 
 input:checked + .slider {
-  background-color: var(--form-control-bkg-color);
+  --switch-before-color: #fff;
+  background-color: var(--switch-active-color);
 }
 
 input:checked + .slider:before {
-  -webkit-transform: translateX(14px);
-  -ms-transform: translateX(14px);
-  transform: translateX(14px);
+  -webkit-transform: translateX(18px);
+  -ms-transform: translateX(18px);
+  transform: translateX(18px);
 }
