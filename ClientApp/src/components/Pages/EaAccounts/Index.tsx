@@ -45,7 +45,6 @@ const Index: FunctionComponent<Props> = (props) => {
 
   const handleButtonClicked = (e: MouseEvent<HTMLInputElement>) => {
     e.preventDefault();
-    debugger;
 
     switch (e.currentTarget.name) {
       case "buying":
@@ -67,7 +66,11 @@ const Index: FunctionComponent<Props> = (props) => {
   };
 
   const handleFrontClick = (e: MouseEvent<HTMLDivElement>) => {
-    setIsAdding(!isAdding);
+    if (!isAdding) setIsAdding(!isAdding);
+  };
+
+  const handleBackClose = (e: MouseEvent<HTMLDivElement>) => {
+    if (isAdding) setIsAdding(!isAdding);
   };
 
   return (
@@ -84,12 +87,10 @@ const Index: FunctionComponent<Props> = (props) => {
         className={`flip-card`}
         style={{
           width: isAdding ? "100%" : "10%",
-          border: isAdding
-            ? "none"
-            : "1px solid var(--form-control-border-color)",
           backgroundColor: isAdding
             ? "transparent"
             : "background-color: var(--form-control-bkg-color)",
+          cursor: isAdding ? "auto" : "cursor",
         }}
         onClick={handleFrontClick}
       >
@@ -103,6 +104,17 @@ const Index: FunctionComponent<Props> = (props) => {
             </div>
           </div>
           <div className={`flip-card-back`}>
+            <div
+              className="fut-btn"
+              style={{
+                position: "absolute",
+                right: "10px",
+                top: "6px",
+              }}
+              onClick={handleBackClose}
+            >
+              X
+            </div>
             <div
               className={`btn-group btn-group-toggle`}
               style={{ margin: "0.125rem 0 1.625rem 0" }}

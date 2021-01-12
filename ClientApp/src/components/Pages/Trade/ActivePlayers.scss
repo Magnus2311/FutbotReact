@@ -4,7 +4,8 @@
 }
 
 .active-player {
-  border: solid 1px var(--btn-border-color);
+  border: solid 1px var(--form-control-border-color);
+  margin-top: 2px;
   cursor: pointer;
   transition: 0.15s;
   border-radius: var(--border-radius);

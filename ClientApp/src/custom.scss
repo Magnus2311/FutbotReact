@@ -19,7 +19,7 @@ body {
 
 @include placeholder {
   font-style: italic;
-  color: white !important;
+  color: var(--text-color) !important;
   font-weight: 400;
 }
 
@@ -184,6 +184,7 @@ h3,
 h4,
 h5,
 h6 {
+  color: var(--text-color);
   text-align: center;
 }
 
@@ -203,6 +204,10 @@ a.text-dark:hover {
 
 .form-group {
   text-align: start;
+}
+
+label {
+  color: var(--text-color);
 }
 
 body {
