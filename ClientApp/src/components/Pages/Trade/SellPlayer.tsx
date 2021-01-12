@@ -54,7 +54,7 @@ const SellPlayer: FunctionComponent<SellPlayerProps> = ({
         display: visibility ? "grid" : "none",
       }}
     >
-      <h3>Sell player</h3>
+      <h4>Sell player</h4>
       <TextBox
         name="name"
         placeholder="Enter player name"

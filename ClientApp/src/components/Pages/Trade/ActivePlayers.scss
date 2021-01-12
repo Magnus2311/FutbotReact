@@ -1,0 +1,45 @@
+.active-players {
+  width: 100%;
+  margin-bottom: 1.75rem;
+}
+
+.active-player {
+  border: solid 1px var(--btn-border-color);
+  cursor: pointer;
+  transition: 0.15s;
+  border-radius: var(--border-radius);
+  width: 100%;
+  position: relative;
+  padding: 0.375rem 0.75rem;
+
+  .base {
+    display: inline-flex;
+    position: relative;
+    width: 100%;
+
+    .rating {
+      position: absolute;
+      right: 10px;
+    }
+  }
+
+  .additional-info {
+    font-size: 0.9rem;
+    display: flex;
+    place-items: center;
+    transition: 0.5s ease;
+
+    .sub-elements {
+      display: inline-flex;
+
+      .sub-element-name {
+        margin-right: 10px;
+      }
+    }
+  }
+}
+
+.active-player:hover {
+  background-color: var(--form-control-bkg-color);
+  transform: scale(1.05);
+}

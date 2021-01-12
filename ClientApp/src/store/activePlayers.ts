@@ -30,7 +30,6 @@ export const actionCreators = {
     },
     loadPlayersToBuy: (eaAccountUsername: string): AppThunk<void, KnownAction> => {
         return (dispatch) => {
-            debugger;
             get<PlayerToBuy[]>(`api/activePlayers?eaAccountUsername=${eaAccountUsername}`)
                 .then(playersToBuy => {
                     dispatch<any>(loadPlayersToBuySuccess(eaAccountUsername, playersToBuy));

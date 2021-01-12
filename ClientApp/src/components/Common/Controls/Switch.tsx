@@ -24,7 +24,7 @@ const Switch: FunctionComponent<SwitchProps> = ({
   };
 
   return (
-    <div>
+    <div className="form-group">
       <label className="switch">
         <input
           ref={element}

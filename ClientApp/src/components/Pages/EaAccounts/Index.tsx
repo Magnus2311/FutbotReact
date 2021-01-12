@@ -15,6 +15,9 @@ import ActivePlayers from "../Trade/ActivePlayers";
 import { ApplicationState } from "../../../store";
 import { connect } from "react-redux";
 import { PlayerToBuy } from "../../../interfaces/Models";
+import "./Index.scss";
+
+const add = require("./../../../images/add_over.png");
 
 interface MatchParams {
   username: string;
@@ -31,6 +34,7 @@ const Index: FunctionComponent<Props> = (props) => {
   const [isBuying, setIsBuying] = useState(true);
   const [isSelling, setIsSelling] = useState(false);
   const [isRelisting, setIsRelisting] = useState(false);
+  const [isAdding, setIsAdding] = useState(false);
   useEffect(() => onLoadActivePlayers(username), []);
 
   const handleRelistAll = (e: FormEvent<HTMLButtonElement>) => {
@@ -62,55 +66,81 @@ const Index: FunctionComponent<Props> = (props) => {
     }
   };
 
+  const handleFrontClick = (e: MouseEvent<HTMLDivElement>) => {
+    setIsAdding(!isAdding);
+  };
+
   return (
     <div
       style={{
         display: "grid",
-        placeItems: "centered",
+        placeItems: "center",
         width: "100%",
       }}
     >
-      <ActivePlayers
-        eaAccountUsername={username}
-        playersToBuy={playersToBuy}
-        onLoadActivePlayers={onLoadActivePlayers}
-      />
       <h2 style={{ marginBottom: "1.5rem" }}>{username}</h2>
+      <ActivePlayers playersToBuy={playersToBuy} />
       <div
-        className={`btn-group btn-group-toggle`}
-        style={{ margin: "0.125rem 0 1.625rem 0" }}
+        className={`flip-card`}
+        style={{
+          width: isAdding ? "100%" : "10%",
+          border: isAdding
+            ? "none"
+            : "1px solid var(--form-control-border-color)",
+          backgroundColor: isAdding
+            ? "transparent"
+            : "background-color: var(--form-control-bkg-color)",
+        }}
+        onClick={handleFrontClick}
       >
-        <label className={`btn btn-secondary ${isBuying && "active"}`}>
-          <input
-            type="radio"
-            name="buying"
-            autoComplete="off"
-            onClick={handleButtonClicked}
-          />{" "}
-          Buy player
-        </label>
-        <label className={`btn btn-secondary ${isSelling && "active"}`}>
-          <input
-            type="radio"
-            name="selling"
-            autoComplete="off"
-            onClick={handleButtonClicked}
-          />{" "}
-          Sell player
-        </label>
-        <label className={`btn btn-secondary ${isRelisting && "active"}`}>
-          <input
-            type="radio"
-            name="relisting"
-            autoComplete="off"
-            onClick={handleButtonClicked}
-          />{" "}
-          Relist player
-        </label>
+        <div className={`flip-card-inner ${isAdding && "rotate"}`}>
+          <div className="flip-card-front">
+            <div>
+              <img src={add} />
+            </div>
+            <div>
+              <span>Add new player</span>
+            </div>
+          </div>
+          <div className={`flip-card-back`}>
+            <div
+              className={`btn-group btn-group-toggle`}
+              style={{ margin: "0.125rem 0 1.625rem 0" }}
+            >
+              <label className={`btn btn-secondary ${isBuying && "active"}`}>
+                <input
+                  type="radio"
+                  name="buying"
+                  autoComplete="off"
+                  onClick={handleButtonClicked}
+                />{" "}
+                Buy player
+              </label>
+              <label className={`btn btn-secondary ${isSelling && "active"}`}>
+                <input
+                  type="radio"
+                  name="selling"
+                  autoComplete="off"
+                  onClick={handleButtonClicked}
+                />{" "}
+                Sell player
+              </label>
+              <label className={`btn btn-secondary ${isRelisting && "active"}`}>
+                <input
+                  type="radio"
+                  name="relisting"
+                  autoComplete="off"
+                  onClick={handleButtonClicked}
+                />{" "}
+                Relist player
+              </label>
+            </div>
+            <BuyPlayer username={username} visibility={isBuying} />
+            <SellPlayer username={username} visibility={isSelling} />
+            <RelistPlayer username={username} visibility={isRelisting} />
+          </div>
+        </div>
       </div>
-      <BuyPlayer username={username} visibility={isBuying} />
-      <SellPlayer username={username} visibility={isSelling} />
-      <RelistPlayer username={username} visibility={isRelisting} />
     </div>
   );
 };

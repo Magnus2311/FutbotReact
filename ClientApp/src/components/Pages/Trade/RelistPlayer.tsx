@@ -54,7 +54,7 @@ const RelistPlayer: FunctionComponent<RelistPlayerProps> = ({
         display: visibility ? "grid" : "none",
       }}
     >
-      <h3>Relist player</h3>
+      <h4>Relist player</h4>
       <TextBox
         name="name"
         placeholder="Enter player name"

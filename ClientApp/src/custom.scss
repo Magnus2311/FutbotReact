@@ -1,3 +1,7 @@
+body {
+  --border-radius: 5px;
+}
+
 @mixin placeholder {
   ::-webkit-input-placeholder {
     @content;
@@ -195,4 +199,12 @@ a.text-dark {
 }
 a.text-dark:hover {
   color: var(--text-color) !important;
+}
+
+.form-group {
+  text-align: start;
+}
+
+body {
+  overflow: hidden;
 }
