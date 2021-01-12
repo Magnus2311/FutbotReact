@@ -1,3 +1,20 @@
+#root {
+  overflow: auto;
+  height: 100%;
+  scrollbar-width: none;
+}
+
+#root::-webkit-scrollbar {
+  width: 0;
+}
+
+html,
+body {
+  overflow: auto;
+  margin: 0;
+  height: 100%;
+}
+
 body {
   --border-radius: 5px;
 }
@@ -208,8 +225,4 @@ a.text-dark:hover {
 
 label {
   color: var(--text-color);
-}
-
-body {
-  overflow: hidden;
 }
