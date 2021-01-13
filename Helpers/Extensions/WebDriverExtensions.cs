@@ -34,6 +34,7 @@ namespace FutbotReact.Helpers.Extensions
         public static void OpenSearchTransferMarket(this IWebDriver driver, EaAccount eaAccount)
         {
             driver.GoToTransferMenu(eaAccount);
+            Thread.Sleep(3000);
             var searchTransfer = driver.FindElement(By.ClassName("ut-tile-transfer-market"), 4);
             searchTransfer.Click();
             Thread.Sleep(1000);
@@ -74,14 +75,14 @@ namespace FutbotReact.Helpers.Extensions
         {
             driver.Navigate().GoToUrl(@"https://www.ea.com/fifa/ultimate-team/web-app/");
 
-            var startButton = driver.FindElement(By.ClassName("btn-standard"), 13);
-            Thread.Sleep(3000);
-            if (startButton == null)
-                return;
-            startButton.Click();
-
             try
             {
+                var startButton = driver.FindElement(By.ClassName("btn-standard"), 13);
+                Thread.Sleep(3000);
+                if (startButton == null)
+                    return;
+                startButton.Click();
+
                 // Entering credentials
                 driver.FindElement(By.Id("email"), 10).SendKeys(eaAccount.Username);
                 driver.FindElement(By.Id("password")).SendKeys(eaAccount.Password);
