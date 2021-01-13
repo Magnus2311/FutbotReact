@@ -21,9 +21,9 @@ namespace FutbotReact.Services.SeleniumServices
             _playersHelper = new PlayersHelper(_chromeDriver);
         }
 
-        public void Sell(SellPlayerDTO sellPlayerDTO)
+        public void Sell(SellPlayerDTO sellPlayerDTO, EaAccount eaAccount)
         {
-            _chromeDriver.OpenTransferTargets();
+            _chromeDriver.OpenTransferTargets(eaAccount);
 
             var wonItemsGroup = _chromeDriver.FindElements(By.ClassName("sectioned-item-list"), 10).ToList()[2];
             var itemList = wonItemsGroup.FindElement(By.ClassName("itemList"));
@@ -36,7 +36,7 @@ namespace FutbotReact.Services.SeleniumServices
             }
             catch (Exception ex)
             {
-                Sell(sellPlayerDTO);
+                Sell(sellPlayerDTO, eaAccount);
             }
         }
     }

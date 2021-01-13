@@ -11,7 +11,7 @@ const ActivePlayers: FunctionComponent<ActivePlayersProps> = ({
 }) => {
   return (
     <>
-      <h4>Active players</h4>
+      {playersToBuy && playersToBuy.length > 0 && <h4>Active players</h4>}
       <div className="active-players">
         {playersToBuy.map((playerToBuy) => {
           return <ActivePlayer player={playerToBuy} />;

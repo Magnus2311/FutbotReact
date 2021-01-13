@@ -20,9 +20,9 @@ namespace FutbotReact.Services.SeleniumServices
             _playersHelper = new PlayersHelper(_chromeDriver);
         }
 
-        public void RelistAll()
+        public void RelistAll(EaAccount eaAccount)
         {
-            _chromeDriver.OpenTransferList();
+            _chromeDriver.OpenTransferList(eaAccount);
             var relistBtn = _chromeDriver.FindElement(By.XPath("//*[contains(text(), 'Re-list All')]"), 5);
             relistBtn.Click();
             var msgBox = _chromeDriver.FindElement(By.ClassName("dialog-body"), 10);
@@ -30,9 +30,9 @@ namespace FutbotReact.Services.SeleniumServices
             yesBtn.Click();
         }
 
-        public void RelistPlayer(SellPlayerDTO sellPlayerDTO)
+        public void RelistPlayer(SellPlayerDTO sellPlayerDTO, EaAccount eaAccount)
         {
-            _chromeDriver.OpenTransferList();
+            _chromeDriver.OpenTransferList(eaAccount);
 
             ListPlayer(sellPlayerDTO);
         }

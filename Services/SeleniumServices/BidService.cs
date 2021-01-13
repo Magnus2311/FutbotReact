@@ -7,6 +7,7 @@ using OpenQA.Selenium.Chrome;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using FutbotReact.Models;
 
 namespace FutbotReact.Services.SeleniumServices
 {
@@ -23,9 +24,9 @@ namespace FutbotReact.Services.SeleniumServices
             _playersHelper = new PlayersHelper(_chromeDriver);
         }
 
-        public void BidPlayer(BidPlayerDTO bidPlayerDTO)
+        public void BidPlayer(BidPlayerDTO bidPlayerDTO, EaAccount eaAccount)
         {
-            _chromeDriver.OpenSearchTransferMarket();
+            _chromeDriver.OpenSearchTransferMarket(eaAccount);
 
             var nameInput = _chromeDriver.FindElement(By.ClassName("ut-text-input-control"), 3);
             nameInput.SendKeys(bidPlayerDTO.Name);
@@ -47,7 +48,7 @@ namespace FutbotReact.Services.SeleniumServices
             {
                 players = _playersHelper.InitPlayers();
             }
-            while (PlaceBid(players, bidPlayerDTO));
+            while (PlaceBid(players, bidPlayerDTO, eaAccount));
 
             do
             {
@@ -56,7 +57,7 @@ namespace FutbotReact.Services.SeleniumServices
             while (PlaceBidActivePlayers(players, bidPlayerDTO));
         }
 
-        private bool PlaceBid(List<IWebElement> players, BidPlayerDTO bidPlayerDTO)
+        private bool PlaceBid(List<IWebElement> players, BidPlayerDTO bidPlayerDTO, EaAccount eaAccount)
         {
             try
             {
@@ -71,8 +72,8 @@ namespace FutbotReact.Services.SeleniumServices
                         okButton.Click();
                         Thread.Sleep(840);
 
-                        if (_clearTargetList.TryClearTargetList(_chromeDriver, bidPlayerDTO))
-                            BidPlayer(bidPlayerDTO);
+                        if (_clearTargetList.TryClearTargetList(_chromeDriver, bidPlayerDTO, eaAccount))
+                            BidPlayer(bidPlayerDTO, eaAccount);
                         return false;
                     }
 
@@ -119,7 +120,7 @@ namespace FutbotReact.Services.SeleniumServices
             catch
             {
                 players = _playersHelper.InitPlayers();
-                PlaceBid(players, bidPlayerDTO);
+                PlaceBid(players, bidPlayerDTO, eaAccount);
                 return true;
             }
         }
@@ -149,7 +150,7 @@ namespace FutbotReact.Services.SeleniumServices
                     Thread.Sleep(1734);
                 }
             }
-            catch (Exception ex)
+            catch
             {
                 players = _playersHelper.InitTargetListOutbidBidPlayers();
                 PlaceBidActivePlayers(players, bidPlayerDTO);

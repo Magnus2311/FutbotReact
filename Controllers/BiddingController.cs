@@ -28,11 +28,14 @@ namespace FutbotReact.Controllers
 
         public async Task<IActionResult> Post(BidPlayerDTO bidPlayer)
         {
+            var user = Request.HttpContext.Items["User"] as User;
+            var eaAccount = user.EaAccounts.FirstOrDefault(ea => ea.Username == bidPlayer.Username);
+
             var playerToBuy = new PlayerToBuy(bidPlayer.Username, bidPlayer.Name, 0, false, 10, bidPlayer.MaxPrice);
             await _activePlayersDbService.AddPlayerToBuy(playerToBuy);
 
             var chromeDriver = ChromeInstances.Instance.Add(bidPlayer.Username);
-            new BidService(chromeDriver).BidPlayer(bidPlayer);
+            new BidService(chromeDriver).BidPlayer(bidPlayer, eaAccount);
             return Ok();
         }
     }

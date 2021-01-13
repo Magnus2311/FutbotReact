@@ -1,4 +1,5 @@
 using FutbotReact.Helpers.Extensions;
+using FutbotReact.Models;
 using FutbotReact.Models.DTOs;
 using FutbotReact.Services.SeleniumServices.Helpers;
 using OpenQA.Selenium;
@@ -10,13 +11,13 @@ namespace FutbotReact.Services.SeleniumServices
     {
         private PlayersHelper _playersHelper;
 
-        public bool TryClearTargetList(ChromeDriver driver, BidPlayerDTO bidPlayerDTO)
+        public bool TryClearTargetList(ChromeDriver driver, BidPlayerDTO bidPlayerDTO, EaAccount eaAccount)
         {
             _playersHelper = new PlayersHelper(driver);
 
             try
             {
-                driver.OpenTransferTargets();
+                driver.OpenTransferTargets(eaAccount);
                 var clearExpired = driver.FindElement(By.XPath("//*[contains(text(), 'Clear Expired')]"), 5);
                 clearExpired.Click();
                 UnwatchOverpricedPlayers(bidPlayerDTO);

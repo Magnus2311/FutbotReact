@@ -1,3 +1,4 @@
+using System.Linq;
 using FutbotReact.Helpers;
 using FutbotReact.Helpers.Attributes;
 using FutbotReact.Models;
@@ -13,20 +14,24 @@ namespace FutbotReact.Controllers
     public class RelistController : ControllerBase
     {
         [HttpGet]
-        public IActionResult RelistAll()
+        public IActionResult RelistAll(string eaAccountUsername)
         {
-            var user = HttpContext.Items["User"] as User;
-            throw new System.Exception("Should be passed ea account username");
+            var user = Request.HttpContext.Items["User"] as User;
+            var eaAccount = user.EaAccounts.FirstOrDefault(ea => ea.Username == eaAccountUsername);
+
             var chromeDriver = ChromeInstances.Instance.Add(user.Username);
-            new RelistService(chromeDriver).RelistAll();
+            new RelistService(chromeDriver).RelistAll(eaAccount);
             return Ok();
         }
 
         [HttpPost("relistplayer")]
         public IActionResult RelistPlayer(SellPlayerDTO sellPlayerDTO)
         {
+            var user = Request.HttpContext.Items["User"] as User;
+            var eaAccount = user.EaAccounts.FirstOrDefault(ea => ea.Username == sellPlayerDTO.Username);
+
             var chromeDriver = ChromeInstances.Instance.Add(sellPlayerDTO.Username);
-            new RelistService(chromeDriver).RelistPlayer(sellPlayerDTO);
+            new RelistService(chromeDriver).RelistPlayer(sellPlayerDTO, eaAccount);
             return Ok();
         }
     }

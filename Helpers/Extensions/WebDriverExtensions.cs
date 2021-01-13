@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium;
+﻿using FutbotReact.Models;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
@@ -30,9 +31,9 @@ namespace FutbotReact.Helpers.Extensions
             return driver.FindElements(by);
         }
 
-        public static void OpenSearchTransferMarket(this IWebDriver driver)
+        public static void OpenSearchTransferMarket(this IWebDriver driver, EaAccount eaAccount)
         {
-            driver.GoToTransferMenu();
+            driver.GoToTransferMenu(eaAccount);
             var searchTransfer = driver.FindElement(By.ClassName("ut-tile-transfer-market"), 4);
             searchTransfer.Click();
             Thread.Sleep(1000);
@@ -41,22 +42,23 @@ namespace FutbotReact.Helpers.Extensions
                 clearParent.FindElement(By.ClassName("flat")).Click();
         }
 
-        public static void OpenTransferTargets(this IWebDriver driver)
+        public static void OpenTransferTargets(this IWebDriver driver, EaAccount eaAccount)
         {
-            driver.GoToTransferMenu();
+            driver.GoToTransferMenu(eaAccount);
             var transferTargets = driver.FindElement(By.ClassName("ut-tile-transfer-targets"), 3);
             transferTargets.Click();
         }
 
-        public static void OpenTransferList(this IWebDriver driver)
+        public static void OpenTransferList(this IWebDriver driver, EaAccount eaAccount)
         {
-            driver.GoToTransferMenu();
+            driver.GoToTransferMenu(eaAccount);
             var transferTargets = driver.FindElement(By.ClassName("ut-tile-transfer-list"), 3);
             transferTargets.Click();
         }
 
-        public static void GoToTransferMenu(this IWebDriver driver)
+        public static void GoToTransferMenu(this IWebDriver driver, EaAccount eaAccount)
         {
+            driver.TryLogin(eaAccount);
             if (driver.Url != "https://www.ea.com/fifa/ultimate-team/web-app/")
             {
                 driver.Navigate().GoToUrl("https://www.ea.com/fifa/ultimate-team/web-app/");
@@ -66,6 +68,29 @@ namespace FutbotReact.Helpers.Extensions
             var transferMenu = driver.FindElement(By.ClassName("icon-transfer"), 10);
             transferMenu.Click();
             Thread.Sleep(1000);
+        }
+
+        public static void TryLogin(this IWebDriver driver, EaAccount eaAccount)
+        {
+            driver.Navigate().GoToUrl(@"https://www.ea.com/fifa/ultimate-team/web-app/");
+
+            var startButton = driver.FindElement(By.ClassName("btn-standard"), 13);
+            Thread.Sleep(3000);
+            if (startButton == null)
+                return;
+            startButton.Click();
+
+            try
+            {
+                // Entering credentials
+                driver.FindElement(By.Id("email"), 10).SendKeys(eaAccount.Username);
+                driver.FindElement(By.Id("password")).SendKeys(eaAccount.Password);
+                driver.FindElement(By.Id("btnLogin")).Click();
+            }
+            catch
+            {
+                return;
+            }
         }
     }
 }
