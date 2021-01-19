@@ -1,27 +1,13 @@
 import * as React from "react";
-import {
-  Collapse,
-  Container,
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
-  Navbar,
-  NavbarBrand,
-  NavbarToggler,
-  NavItem,
-  NavLink,
-} from "reactstrap";
+import { Collapse, Navbar, NavbarBrand, NavbarToggler } from "reactstrap";
 import { Link } from "react-router-dom";
 import "./NavMenu.css";
 import UserNavMenu from "./Auth/UserNavMenu";
 
 const NavMenu: React.FunctionComponent = () => {
   const [isOpen, setIsOpen] = React.useState(false);
-  const [isEaAccountsOpen, setIsEaAccountsOpen] = React.useState(false);
 
   const toggle = () => setIsOpen(!isOpen);
-  const toggleEaAccounts = () => setIsEaAccountsOpen(!isEaAccountsOpen);
 
   return (
     <header>

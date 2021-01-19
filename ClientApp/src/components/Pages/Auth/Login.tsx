@@ -7,7 +7,6 @@ import React, {
 } from "react";
 import { User } from "../../../interfaces/Models";
 import TextBox from "../../Common/Controls/TextBox";
-import { RouteComponentProps, useHistory } from "react-router";
 import { AuthContext } from "../../Common/Contexts/AuthContext";
 import { login } from "../../../services/db/usersDbService";
 
@@ -17,7 +16,6 @@ const Login: FunctionComponent<LoginProps> = ({ returnAfterLogin }) => {
   const [logged, setLogged] = useState(false);
   const [currentUser, setCurrentUser] = useState<User>({} as User);
   const { setUser } = useContext(AuthContext);
-  const history = useHistory();
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

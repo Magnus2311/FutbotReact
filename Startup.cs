@@ -80,9 +80,6 @@ namespace FutbotReact
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
             });
-            app.UseCors(
-                options => options.WithOrigins("https://localhost:44312/", "https://localhost:5001/").AllowAnyMethod()
-            );
 
             app.UseSpa(spa =>
             {
@@ -93,6 +90,10 @@ namespace FutbotReact
                     spa.UseReactDevelopmentServer(npmScript: "start");
                 }
             });
+
+            app.UseCors(
+                options => options.WithOrigins("https://localhost:44312/", "https://localhost:5001/").AllowAnyMethod()
+            );
 
             configureDb.Start();
         }
