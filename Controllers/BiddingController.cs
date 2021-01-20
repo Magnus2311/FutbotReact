@@ -31,7 +31,12 @@ namespace FutbotReact.Controllers
             var user = Request.HttpContext.Items["User"] as User;
             var eaAccount = user.EaAccounts.FirstOrDefault(ea => ea.Username == bidPlayer.Username);
 
-            var playerToBuy = new PlayerToBuy(bidPlayer.Username, bidPlayer.Name, 0, false, 10, bidPlayer.MaxPrice);
+            var playerToBuy = new PlayerToBuy(eaAccountUsername: bidPlayer.Username,
+            name: bidPlayer.Name,
+            rating: bidPlayer.Rating,
+            isBin: false,
+            maxActiveBids: bidPlayer.MaxActiveBids,
+            maxPrice: bidPlayer.MaxPrice);
             await _activePlayersDbService.AddPlayerToBuy(playerToBuy);
 
             var chromeDriver = ChromeInstances.Instance.Add(bidPlayer.Username);

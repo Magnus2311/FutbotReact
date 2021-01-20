@@ -34,7 +34,7 @@ namespace FutbotReact.Services.SeleniumServices
                 foreach (var player in players)
                     _playersHelper.SellPlayer(player, sellPlayerDTO);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 Sell(sellPlayerDTO, eaAccount);
             }

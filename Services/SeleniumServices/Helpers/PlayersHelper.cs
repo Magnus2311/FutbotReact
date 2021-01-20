@@ -23,7 +23,7 @@ namespace FutbotReact.Services.SeleniumServices.Helpers
         public List<IWebElement> InitTargetListOutbidBidPlayers()
         {
             var activeBids = _chromeDriver.FindElements(By.ClassName("sectioned-item-list"), 10).FirstOrDefault();
-            var itemList = activeBids.FindElement(By.ClassName("itemList"));
+            var itemList = activeBids?.FindElement(By.ClassName("itemList"));
             return new List<IWebElement>(itemList.FindElements(By.ClassName("listFUTItem")));
         }
 

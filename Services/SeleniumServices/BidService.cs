@@ -13,6 +13,7 @@ namespace FutbotReact.Services.SeleniumServices
 {
     public class BidService
     {
+        private int _currentPlayersBidded;
         private readonly ChromeDriver _chromeDriver;
         private readonly ClearTargetList _clearTargetList;
         private readonly PlayersHelper _playersHelper;
@@ -31,7 +32,8 @@ namespace FutbotReact.Services.SeleniumServices
             var nameInput = _chromeDriver.FindElement(By.ClassName("ut-text-input-control"), 3);
             nameInput.SendKeys(bidPlayerDTO.Name);
             Thread.Sleep(500);
-            var selectPlayer = _chromeDriver.FindElementByClassName("playerResultsList").FindElement(By.CssSelector("button"));
+            var searchedPlayers = _chromeDriver.FindElementByClassName("playerResultsList").FindElements(By.CssSelector("button"));
+            var selectPlayer = searchedPlayers.FirstOrDefault(p => p.FindElement(By.CssSelector(".btn-subtext")).Text == bidPlayerDTO.Rating.ToString());
             selectPlayer.Click();
             Thread.Sleep(1000);
             var priceElements = _chromeDriver.FindElementsByClassName("numericInput");
@@ -78,7 +80,11 @@ namespace FutbotReact.Services.SeleniumServices
                     }
 
                     var classes = player.GetAttribute("class").Split(" ").ToList();
-                    if (classes.Contains("highest-bid")) continue;
+                    if (classes.Contains("highest-bid"))
+                    {
+                        _currentPlayersBidded++;
+                        continue;
+                    }
 
                     player.Click();
                     var period = _chromeDriver.FindElementByClassName("subContent").Text;
@@ -100,6 +106,10 @@ namespace FutbotReact.Services.SeleniumServices
                     // inputPrice.SendKeys(Keys.Backspace);
                     // inputPrice.SendKeys(bidPlayerDTO.MaxPrice.ToString());
                     var bidButton = _chromeDriver.FindElementByClassName("bidButton");
+                    if (_currentPlayersBidded >= bidPlayerDTO.MaxActiveBids)
+                        return false;
+
+                    _currentPlayersBidded++;
                     bidButton.Click();
                     Thread.Sleep(2000);
                 }

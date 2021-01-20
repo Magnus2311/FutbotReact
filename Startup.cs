@@ -1,6 +1,8 @@
+using System.Threading.Tasks;
 using FutbotReact.Helpers;
 using FutbotReact.Models.Auth;
 using FutbotReact.Services.DbServices;
+using FutbotReact.Services.ScheduledServices;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
@@ -44,12 +46,14 @@ namespace FutbotReact
             services.AddTransient<ConfigureDb>();
             services.AddTransient<LoggerDbService>();
             services.AddTransient<ActivePlayersDbService>();
+            services.AddTransient<RebidPlayerService>();
         }
 
         public void Configure(IApplicationBuilder app,
             IWebHostEnvironment env,
             ConfigureDb configureDb,
-            LoggerDbService logger)
+            LoggerDbService logger,
+            RebidPlayerService rebidService)
         {
             if (env.IsDevelopment())
             {
@@ -96,6 +100,7 @@ namespace FutbotReact
             );
 
             configureDb.Start();
+            Task.Run(() => rebidService.StartAsync(new System.Threading.CancellationToken()));
         }
     }
 }
