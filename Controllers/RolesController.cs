@@ -29,7 +29,7 @@ namespace FutbotReact.Controllers
             return Ok();
         }
 
-        [HttpPut("update")]
+        [HttpPost("update")]
         public async Task<IActionResult> Update(Role role)
         {
             _logger.Log(HttpContext.User.Identity.Name, "Role is updated", role.Name, Request.HttpContext.Connection.RemoteIpAddress.ToString());

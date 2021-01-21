@@ -2,6 +2,7 @@ import { toast } from "react-toastify";
 import { Action, Reducer } from "redux";
 import { AppThunk } from ".";
 import { Role } from "../interfaces/Models";
+import { Roles } from "../interfaces/Roles";
 import { get, post } from "../services/fetch/fetch";
 
 export interface RolesState {
@@ -73,10 +74,23 @@ export const actionCreators = {
   },
   editRole: (role: Role): AppThunk<void, KnownAction> => {
     return (dispatch) => {
-      post("/api/roles/update", role, "PUT")
-        .then(() => {
-          dispatch<any>(editRole(role));
-          toast.success("Role updated successfully!");
+      fetch("/api/roles/update/", {
+        method: "POST",
+        cache: "no-cache",
+        credentials: "same-origin",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(role),
+      })
+        .then((response) => {
+          if (response.status === 200) {
+            dispatch<any>(editRole(role));
+            toast.success("Role updated successfully!");
+          } else {
+            toast.error("Role was not updated!");
+          }
         })
         .catch((error) => {
           console.log(error);
@@ -99,6 +113,19 @@ export const reducer: Reducer<RolesState> = (
       return { roles: [...state.roles, action.role] };
     case "ROLES_LOADED":
       return { ...state.roles, roles: action.roles };
+    case "ROLE_EDITED":
+      return {
+        ...state,
+        roles: state.roles.map((currentRole) =>
+          currentRole.id === action.role.id
+            ? {
+                ...currentRole,
+                name: action.role.name,
+                permissions: action.role.permissions,
+              }
+            : currentRole
+        ),
+      };
     default:
       return state;
   }
