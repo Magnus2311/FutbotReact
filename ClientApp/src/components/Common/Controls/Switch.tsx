@@ -10,12 +10,14 @@ interface SwitchProps {
   label?: string;
   isChecked: boolean;
   handleChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  name?: string;
 }
 
 const Switch: FunctionComponent<SwitchProps> = ({
   label,
   isChecked,
   handleChange,
+  name,
 }) => {
   const element = createRef<HTMLInputElement>();
 
@@ -29,6 +31,7 @@ const Switch: FunctionComponent<SwitchProps> = ({
         <input
           ref={element}
           type="checkbox"
+          name={name ?? ""}
           checked={isChecked}
           onChange={handleChange}
         />

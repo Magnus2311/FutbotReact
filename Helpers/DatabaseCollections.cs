@@ -6,5 +6,7 @@ namespace FutbotReact.Helpers
         public const string Errors = "errors";
         public const string Logins = "logins";
         public const string ScheduledStarts = "scheduledStarts";
+        public const string Roles = "roles";
+        public const string RolesLogs = "rolesLogs";
     }
 }

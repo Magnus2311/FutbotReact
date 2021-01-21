@@ -13,6 +13,7 @@ import Index from "./components/Pages/Auth/Index";
 import IndexEaAccount from "./components/Pages/EaAccounts/Index";
 import { connect } from "react-redux";
 import Home from "./components/Pages/Home/Home";
+import AddRole from "./components/Pages/Admin/Roles/Add";
 
 const App: React.FunctionComponent<any> = () => {
   const [user, setUser] = React.useState<User>({} as User);
@@ -29,6 +30,7 @@ const App: React.FunctionComponent<any> = () => {
           exact
           path="/ea/account/:username"
         />
+        <AuthenticatedRoute Component={AddRole} exact path="/admin/roles/add" />
         <Route path="/auth/registration" component={Registration} />
         <Route path="/auth/login" component={Login} />
       </Layout>

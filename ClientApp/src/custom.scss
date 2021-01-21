@@ -135,6 +135,7 @@ body {
   cursor: pointer;
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
     border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  width: 100%;
 }
 
 .fut-btn:focus {
@@ -225,4 +226,8 @@ a.text-dark:hover {
 
 label {
   color: var(--text-color);
+}
+
+form {
+  width: 100%;
 }

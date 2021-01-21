@@ -1,12 +1,11 @@
 using System.Threading.Tasks;
-using FutbotReact.Helpers;
-using FutbotReact.Models.Auth;
 using FutbotReact.Services.DbServices;
 using FutbotReact.Services.ScheduledServices;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -47,6 +46,7 @@ namespace FutbotReact
             services.AddTransient<LoggerDbService>();
             services.AddTransient<ActivePlayersDbService>();
             services.AddTransient<RebidPlayerService>();
+            services.AddTransient<RolesDbService>();
         }
 
         public void Configure(IApplicationBuilder app,
@@ -74,6 +74,12 @@ namespace FutbotReact
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
             app.UseRouting();
+
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor |
+                        ForwardedHeaders.XForwardedProto
+            });
 
             app.UseAuthentication();
             app.UseAuthorization();

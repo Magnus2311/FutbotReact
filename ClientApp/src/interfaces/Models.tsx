@@ -4,6 +4,7 @@ export interface User {
   isConfirmed?: boolean;
   createdDate: Date;
   eaAccounts: EaAccount[];
+  roles?: string[];
 }
 
 export interface EaAccount {
@@ -65,6 +66,12 @@ export interface PlayerToBuy {
   isBin: boolean;
   maxActiveBids: number;
   maxPrice: number;
+}
+
+export interface Role {
+  id?: string;
+  name: string;
+  permissions: string[];
 }
 
 //export type {

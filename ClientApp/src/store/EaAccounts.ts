@@ -1,9 +1,7 @@
-import { debug } from 'console';
-import { stat } from 'fs';
 import { toast } from 'react-toastify';
 import { Action, Reducer } from 'redux';
 import { AppThunk } from '.';
-import { EaAccount, User } from '../interfaces/Models';
+import { EaAccount } from '../interfaces/Models';
 import { get } from '../services/fetch/fetch';
 
 export interface EaAccountsState {
@@ -21,7 +19,7 @@ const loadEaAccountsSuccess = (eaAccounts: EaAccount[]) => ({ type: 'LOAD_EA_ACC
 export const actionCreators = {
     addEaAccount: (eaAccount: EaAccount): AppThunk<void, KnownAction> => {
         return (dispatch) => {
-            fetch("api/eaaccounts/add/", {
+            fetch("/api/eaaccounts/add/", {
                 method: "POST",
                 cache: "no-cache",
                 credentials: "same-origin",

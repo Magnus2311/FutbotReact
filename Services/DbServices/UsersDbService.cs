@@ -21,6 +21,7 @@ namespace FutbotReact.Services.DbServices
         {
             _hasher = hasher;
             _logger = logger;
+            _collection = _db.GetCollection<User>(DatabaseCollections.Users);
         }
 
         public async Task Add(User user)
