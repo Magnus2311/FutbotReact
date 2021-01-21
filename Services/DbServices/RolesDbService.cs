@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using FutbotReact.Helpers;
 using FutbotReact.Models.Admin;
@@ -16,5 +17,11 @@ namespace FutbotReact.Services.DbServices
 
         public async Task Add(Role role)
             => await _rolesCollection.InsertOneAsync(role);
+        public async Task Update(Role role)
+            => await _rolesCollection.UpdateManyAsync(Builders<Role>.Filter.Eq(r => r.Id, role.Id),
+                Builders<Role>.Update.Set(r => r.Name, role.Name).Set(r => r.Permissions, role.Permissions)
+            );
+        public async Task<IEnumerable<Role>> GetAll()
+            => await (await _rolesCollection.FindAsync(Builders<Role>.Filter.Empty)).ToListAsync();
     }
 }

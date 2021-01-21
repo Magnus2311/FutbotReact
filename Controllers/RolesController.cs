@@ -28,5 +28,17 @@ namespace FutbotReact.Controllers
             await _roleDbService.Add(role);
             return Ok();
         }
+
+        [HttpPut("update")]
+        public async Task<IActionResult> Update(Role role)
+        {
+            _logger.Log(HttpContext.User.Identity.Name, "Role is updated", role.Name, Request.HttpContext.Connection.RemoteIpAddress.ToString());
+            await _roleDbService.Update(role);
+            return Ok();
+        }
+
+        [HttpGet("getall")]
+        public async Task<IActionResult> GetAll()
+            => Ok(await _roleDbService.GetAll());
     }
 }

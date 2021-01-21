@@ -5,11 +5,9 @@ import React, {
   useState,
 } from "react";
 import { Role } from "../../../../interfaces/Models";
-import { Roles } from "../../../../interfaces/Roles";
-import Switch from "../../../Common/Controls/Switch";
-import TextBox from "../../../Common/Controls/TextBox";
 import { actionCreators } from "../../../../store/roles";
 import { connect } from "react-redux";
+import RoleVisualizer from "./Role";
 
 const emptyRole: Role = {
   name: "",
@@ -47,45 +45,13 @@ const AddRole: FunctionComponent<AddRoleState> = ({ onAddRole }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h4>Add role</h4>
-      <TextBox
-        handleChange={handleChange}
-        label="Role name"
-        name="name"
-        placeholder="Enter role name"
-        value={role.name}
-      />
-      <hr />
-      {Object.keys(Roles).map((key) => {
-        return (
-          <>
-            <h5 style={{ textAlign: "left" }}>{key}</h5>
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fill, minmax(150px, 1fr))",
-              }}
-            >
-              {Roles[key].map((permission: string) => {
-                const rolePermission = `${key}.${permission}`;
-                return (
-                  <Switch
-                    key={rolePermission}
-                    label={permission}
-                    name={rolePermission}
-                    isChecked={role.permissions.includes(rolePermission)}
-                    handleChange={handlePermissionClicked}
-                  />
-                );
-              })}
-            </div>
-            <hr />
-          </>
-        );
-      })}
-      <button className="fut-btn">Add role</button>
-    </form>
+    <RoleVisualizer
+      handleRoleChange={handleChange}
+      role={role}
+      handlePermissionClicked={handlePermissionClicked}
+      handleSubmit={handleSubmit}
+      btnText="Add role"
+    />
   );
 };
 
