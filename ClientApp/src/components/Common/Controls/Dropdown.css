@@ -1,0 +1,17 @@
+.dropdown-items-container {
+  cursor: pointer;
+  position: absolute;
+  transition: max-height 0.5s linear;
+  overflow: auto;
+  scrollbar-width: none;
+  z-index: 10000;
+}
+
+.dropdown-items-container::-webkit-scrollbar {
+  width: 0;
+}
+
+.dropdown-item {
+  color: var(--text-clr);
+  transition: max-height 0.5s linear, visibility 0.3s linear;
+}

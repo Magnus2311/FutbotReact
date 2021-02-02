@@ -61,7 +61,6 @@ export const actionCreators = {
   },
   loadRoles: (): AppThunk<void, KnownAction> => {
     return (dispatch) => {
-      debugger;
       get<Role[]>("/api/roles/getall")
         .then((roles) => {
           dispatch<any>(loadRoles(roles));

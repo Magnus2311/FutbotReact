@@ -2,7 +2,6 @@ import React, {
   ChangeEvent,
   FormEvent,
   FunctionComponent,
-  MouseEvent,
   useEffect,
   useState,
 } from "react";
@@ -10,6 +9,7 @@ import { connect } from "react-redux";
 import { Role } from "../../../../interfaces/Models";
 import { ApplicationState } from "../../../../store";
 import { actionCreators } from "../../../../store/roles";
+import Dropdown from "../../../Common/Controls/Dropdown";
 import RoleVisualizer from "./Role";
 
 type EditRolesState = {
@@ -26,14 +26,6 @@ const EditRoles: FunctionComponent<EditRolesState> = ({
   const [selectedRole, setSelectedRole] = useState<Role>({} as Role);
 
   useEffect(() => onLoadRoles(), []);
-
-  const handleRoleClick = (e: MouseEvent<HTMLDivElement>) => {
-    const currentRole = roles.filter(
-      (r) => r.name === e.currentTarget.innerText
-    )[0];
-
-    setSelectedRole(currentRole);
-  };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -66,18 +58,19 @@ const EditRoles: FunctionComponent<EditRolesState> = ({
       });
   };
 
+  const handleItemChosen = (item: string) => {
+    const currentRole = roles.filter((r) => r.name === item)[0];
+
+    setSelectedRole(currentRole);
+  };
+
   return (
     <>
-      <div>
-        {roles.map((role) => {
-          return (
-            <div key={role.id} onClick={handleRoleClick}>
-              {role.name}
-            </div>
-          );
-        })}
-      </div>
-      {selectedRole.name && (
+      <Dropdown
+        items={roles.map((role) => role?.name)}
+        handleItemChosen={handleItemChosen}
+      />
+      {selectedRole && selectedRole?.name && (
         <RoleVisualizer
           handleRoleChange={handleChange}
           role={selectedRole}
