@@ -10,6 +10,9 @@ interface RoleState {
   handleRoleChange: (e: ChangeEvent<HTMLInputElement>) => void;
   handleSubmit: (e: FormEvent<HTMLFormElement>) => void;
   handlePermissionClicked: (e: ChangeEvent<HTMLInputElement>) => void;
+  style?: {
+    marginTop: string;
+  };
 }
 
 const RoleVisualizer: FunctionComponent<RoleState> = ({
@@ -18,10 +21,11 @@ const RoleVisualizer: FunctionComponent<RoleState> = ({
   handleSubmit,
   handlePermissionClicked,
   btnText,
+  style,
 }) => {
   return (
     <form onSubmit={handleSubmit}>
-      <h4>{btnText}</h4>
+      <h4 style={{ marginTop: style ? style.marginTop : "0" }}>{btnText}</h4>
       <TextBox
         handleChange={handleRoleChange}
         label="Role name"

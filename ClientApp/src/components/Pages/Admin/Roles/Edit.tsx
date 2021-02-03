@@ -77,6 +77,7 @@ const EditRoles: FunctionComponent<EditRolesState> = ({
           handlePermissionClicked={handlePermissionClicked}
           handleSubmit={handleSubmit}
           btnText="Edit role"
+          style={{ marginTop: "20px" }}
         />
       )}
     </>

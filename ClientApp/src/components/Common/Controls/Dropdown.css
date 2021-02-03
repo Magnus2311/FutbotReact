@@ -1,10 +1,12 @@
 .dropdown-items-container {
   cursor: pointer;
   position: absolute;
-  transition: max-height 0.5s linear;
+  transition: max-height 0.2s linear;
   overflow: auto;
   scrollbar-width: none;
   z-index: 10000;
+  background: var(--form-control-bkg-color);
+  width: 100%;
 }
 
 .dropdown-items-container::-webkit-scrollbar {
@@ -13,5 +15,23 @@
 
 .dropdown-item {
   color: var(--text-clr);
-  transition: max-height 0.5s linear, visibility 0.3s linear;
+  transition: max-height 0.2s linear, visibility 0.12s linear;
+  background-color: var(--form-control-bkg-color);
+  z-index: 10000;
+}
+
+.dropdown-item:hover {
+  color: var(--text-clr);
+  background-color: var(--bkg-color);
+}
+
+.dropdown-item:active {
+  color: var(--text-clr);
+  background-color: var(--bkg-color);
+}
+
+.dropdown-input {
+  background: var(--form-control-bkg-color);
+  color: var(--txt-color);
+  border: none;
 }
