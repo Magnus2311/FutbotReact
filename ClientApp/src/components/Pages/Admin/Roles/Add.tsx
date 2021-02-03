@@ -16,9 +16,13 @@ const emptyRole: Role = {
 
 interface AddRoleState {
   onAddRole: (role: Role) => void;
+  visibility: boolean;
 }
 
-const AddRole: FunctionComponent<AddRoleState> = ({ onAddRole }) => {
+const AddRole: FunctionComponent<AddRoleState> = ({
+  onAddRole,
+  visibility,
+}) => {
   const [role, setRole] = useState(emptyRole);
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -51,6 +55,7 @@ const AddRole: FunctionComponent<AddRoleState> = ({ onAddRole }) => {
       handlePermissionClicked={handlePermissionClicked}
       handleSubmit={handleSubmit}
       btnText="Add role"
+      style={{ visibility }}
     />
   );
 };

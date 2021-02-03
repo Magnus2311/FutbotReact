@@ -16,6 +16,9 @@ import { ApplicationState } from "../../../store";
 import { connect } from "react-redux";
 import { PlayerToBuy } from "../../../interfaces/Models";
 import "./Index.scss";
+import RadioButtonsContainer, {
+  RadioButton,
+} from "../../Common/Controls/RadioButtonsContainer";
 
 const add = require("./../../../images/add_over.png");
 
@@ -31,38 +34,39 @@ interface Props extends RouteComponentProps<MatchParams> {
 const Index: FunctionComponent<Props> = (props) => {
   const { username } = props.match.params;
   const { playersToBuy, onLoadActivePlayers } = props;
-  const [isBuying, setIsBuying] = useState(true);
-  const [isSelling, setIsSelling] = useState(false);
-  const [isRelisting, setIsRelisting] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
+  const radioButtons = [
+    {
+      name: "Buy player",
+      isActive: true,
+      Component: BuyPlayer,
+      props: {
+        username: username,
+      },
+    },
+    {
+      name: "Sell player",
+      isActive: false,
+      Component: SellPlayer,
+      props: {
+        username: username,
+      },
+    },
+    {
+      name: "Relist player",
+      isActive: false,
+      Component: RelistPlayer,
+      props: {
+        username: username,
+      },
+    },
+  ] as RadioButton[];
   useEffect(() => onLoadActivePlayers(username), []);
 
   const handleRelistAll = (e: FormEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
     get("/api/relist").catch((error) => console.log(error));
-  };
-
-  const handleButtonClicked = (e: MouseEvent<HTMLInputElement>) => {
-    e.preventDefault();
-
-    switch (e.currentTarget.name) {
-      case "buying":
-        setIsBuying(true);
-        setIsSelling(false);
-        setIsRelisting(false);
-        break;
-      case "selling":
-        setIsBuying(false);
-        setIsSelling(true);
-        setIsRelisting(false);
-        break;
-      case "relisting":
-        setIsBuying(false);
-        setIsSelling(false);
-        setIsRelisting(true);
-        break;
-    }
   };
 
   const handleFrontClick = (e: MouseEvent<HTMLDivElement>) => {
@@ -115,41 +119,7 @@ const Index: FunctionComponent<Props> = (props) => {
             >
               X
             </div>
-            <div
-              className={`btn-group btn-group-toggle`}
-              style={{ margin: "0.125rem 0 1.625rem 0" }}
-            >
-              <label className={`btn btn-secondary ${isBuying && "active"}`}>
-                <input
-                  type="radio"
-                  name="buying"
-                  autoComplete="off"
-                  onClick={handleButtonClicked}
-                />{" "}
-                Buy player
-              </label>
-              <label className={`btn btn-secondary ${isSelling && "active"}`}>
-                <input
-                  type="radio"
-                  name="selling"
-                  autoComplete="off"
-                  onClick={handleButtonClicked}
-                />{" "}
-                Sell player
-              </label>
-              <label className={`btn btn-secondary ${isRelisting && "active"}`}>
-                <input
-                  type="radio"
-                  name="relisting"
-                  autoComplete="off"
-                  onClick={handleButtonClicked}
-                />{" "}
-                Relist player
-              </label>
-            </div>
-            <BuyPlayer username={username} visibility={isBuying} />
-            <SellPlayer username={username} visibility={isSelling} />
-            <RelistPlayer username={username} visibility={isRelisting} />
+            <RadioButtonsContainer radioButtons={radioButtons} />
           </div>
         </div>
       </div>

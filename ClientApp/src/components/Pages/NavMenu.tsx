@@ -1,13 +1,18 @@
 import * as React from "react";
 import { Collapse, Navbar, NavbarBrand, NavbarToggler } from "reactstrap";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import "./NavMenu.css";
 import UserNavMenu from "./Auth/UserNavMenu";
+import { ReactComponent as AdminIcon } from "../../images/admin/management.svg";
 
 const NavMenu: React.FunctionComponent = () => {
   const [isOpen, setIsOpen] = React.useState(false);
+  const history = useHistory();
 
   const toggle = () => setIsOpen(!isOpen);
+  const handleAdminIconClick = () => {
+    history.push("/admin/roles/index");
+  };
 
   return (
     <header>
@@ -19,6 +24,16 @@ const NavMenu: React.FunctionComponent = () => {
           FutbotReact
         </NavbarBrand>
         <NavbarToggler onClick={toggle} className="mr-2" />
+        <AdminIcon
+          onClick={handleAdminIconClick}
+          className="admin-icon"
+          style={{
+            height: "30px",
+            width: "30px",
+            fill: "white",
+            cursor: "pointer",
+          }}
+        />
         <Collapse
           className="d-sm-inline-flex flex-sm-row-reverse"
           isOpen={isOpen}

@@ -16,12 +16,14 @@ type EditRolesState = {
   roles: Role[];
   onLoadRoles: () => void;
   onEditRole: (role: Role) => void;
+  visibility: boolean;
 };
 
 const EditRoles: FunctionComponent<EditRolesState> = ({
   roles,
   onLoadRoles,
   onEditRole,
+  visibility,
 }) => {
   const [selectedRole, setSelectedRole] = useState<Role>({} as Role);
 
@@ -66,10 +68,12 @@ const EditRoles: FunctionComponent<EditRolesState> = ({
 
   return (
     <>
-      <Dropdown
-        items={roles.map((role) => role?.name)}
-        handleItemChosen={handleItemChosen}
-      />
+      {visibility && (
+        <Dropdown
+          items={roles.map((role) => role?.name)}
+          handleItemChosen={handleItemChosen}
+        />
+      )}
       {selectedRole && selectedRole?.name && (
         <RoleVisualizer
           handleRoleChange={handleChange}
@@ -77,7 +81,7 @@ const EditRoles: FunctionComponent<EditRolesState> = ({
           handlePermissionClicked={handlePermissionClicked}
           handleSubmit={handleSubmit}
           btnText="Edit role"
-          style={{ marginTop: "20px" }}
+          style={{ marginTop: "20px", visibility }}
         />
       )}
     </>

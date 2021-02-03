@@ -11,7 +11,7 @@ import TextBox from "../../Common/Controls/TextBox";
 
 interface BuyPlayerProps {
   username: string;
-  visibility: boolean;
+  visibility?: boolean;
 }
 
 const emptyBid: BidPlayerDTO = {
@@ -38,10 +38,6 @@ const BuyPlayer: FunctionComponent<BuyPlayerProps> = ({
 
   const handleBidPlayer = (e: FormEvent<HTMLButtonElement>) => {
     e.preventDefault();
-
-    const temp = JSON.stringify(bidPlayer);
-    debugger;
-
     post("/api/bidding", bidPlayer).catch((error) => console.log(error));
   };
 

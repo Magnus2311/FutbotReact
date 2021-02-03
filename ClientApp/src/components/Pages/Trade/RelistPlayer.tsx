@@ -18,7 +18,7 @@ const emptyResellPlayer: SellPlayerDTO = {
 
 interface RelistPlayerProps {
   username: string;
-  visibility: boolean;
+  visibility?: boolean;
 }
 
 const RelistPlayer: FunctionComponent<RelistPlayerProps> = ({

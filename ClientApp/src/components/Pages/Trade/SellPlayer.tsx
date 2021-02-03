@@ -18,7 +18,7 @@ const emptySell: SellPlayerDTO = {
 
 interface SellPlayerProps {
   username: string;
-  visibility: boolean;
+  visibility?: boolean;
 }
 
 const SellPlayer: FunctionComponent<SellPlayerProps> = ({
