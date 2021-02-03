@@ -53,6 +53,10 @@ namespace FutbotReact.Controllers
         [Authorize]
         public IActionResult GetUserName() => Ok(HttpContext.Items["User"] as User);
 
+        [HttpGet("getAll")]
+        [Authorize]
+        public async Task<IActionResult> GetAll() => Ok(await _dbService.GetAll());
+
         [HttpPost("logout")]
         [Authorize]
         public async Task<IActionResult> Logout()

@@ -4,12 +4,13 @@ import RadioButtonsContainer, {
 } from "../../../Common/Controls/RadioButtonsContainer";
 import Add from "./Add";
 import Edit from "./Edit";
+import EditUsers from "./EditUsers";
 
 const Index: FunctionComponent = () => {
   const radioButtons = [
     { name: "Add role", isActive: true, Component: Add },
     { name: "Edit role", isActive: false, Component: Edit },
-    { name: "Edit user's roles", isActive: false, Component: Add },
+    { name: "Edit user's roles", isActive: false, Component: EditUsers },
   ] as RadioButton[];
 
   return (
