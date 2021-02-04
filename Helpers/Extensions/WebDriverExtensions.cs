@@ -59,7 +59,7 @@ namespace FutbotReact.Helpers.Extensions
 
         public static void GoToTransferMenu(this IWebDriver driver, EaAccount eaAccount)
         {
-            driver.TryLogin(eaAccount);
+            // driver.TryLogin(eaAccount);
             if (driver.Url != "https://www.ea.com/fifa/ultimate-team/web-app/")
             {
                 driver.Navigate().GoToUrl("https://www.ea.com/fifa/ultimate-team/web-app/");

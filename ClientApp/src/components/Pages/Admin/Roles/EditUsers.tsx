@@ -1,26 +1,26 @@
-import React, {
-  FunctionComponent,
-  MouseEvent,
-  useEffect,
-  useState,
-} from "react";
+import React, { FunctionComponent, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { ApplicationState } from "../../../../store";
 import Dropdown from "../../../Common/Controls/Dropdown";
 import { actionCreators } from "../../../../store/users";
-import { User } from "../../../../interfaces/Models";
+import { Role, User } from "../../../../interfaces/Models";
 
 interface EditUsersProps {
-  users: User[];
+  users: {
+    users: User[];
+  };
+  roles: {
+    roles: Role[];
+  };
   onUsersLoad: () => void;
   visibility: boolean;
 }
 
-const EditUsers: FunctionComponent<EditUsersProps> = ({
-  users,
-  onUsersLoad,
-  visibility,
-}) => {
+const EditUsers: FunctionComponent<EditUsersProps> = (props) => {
+  debugger;
+  const { onUsersLoad, visibility } = props;
+  const users = props.users.users;
+  const roles = props.roles.roles;
   const [selectedUser, setSelectedUser] = useState<User | undefined>();
 
   const handleItemChosen = (username: string) => {
@@ -43,7 +43,9 @@ const EditUsers: FunctionComponent<EditUsersProps> = ({
   );
 };
 
-const mapStateToProps = (state: ApplicationState) => state.users;
+const mapStateToProps = (state: ApplicationState) => {
+  return { users: state.users, roles: state.roles };
+};
 
 const mapDispatchToProps = (dispatch: any) => {
   return {

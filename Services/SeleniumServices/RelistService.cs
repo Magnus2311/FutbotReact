@@ -41,14 +41,24 @@ namespace FutbotReact.Services.SeleniumServices
         {
             try
             {
-                var expiredItems = _chromeDriver.FindElements(By.ClassName("expired"));
-                if (expiredItems.Count == 0) return;
-
-                var player = expiredItems.FirstOrDefault();
-                _playersHelper.SellPlayer(player, sellPlayerDTO);
-                ListPlayer(sellPlayerDTO);
+                Thread.Sleep(3000);
+                var a = _chromeDriver.FindElements(By.ClassName("sectioned-item-list"))[2];
+                var b = a.FindElement(By.XPath("./.."));
+                var newItems = b.FindElements(By.ClassName("listFUTItem"));
+                if (newItems?.Count > 0)
+                    foreach (var player in newItems)
+                        _playersHelper.SellPlayer(player, sellPlayerDTO);
+                else
+                {
+                    _chromeDriver.OpenTransferTargets(new EaAccount { Username = sellPlayerDTO.Username });
+                    Thread.Sleep(3000);
+                    var expiredItems = _chromeDriver.FindElements(By.ClassName("expired"));
+                    if (expiredItems.Count == 0) return;
+                    foreach (var player in expiredItems)
+                        _playersHelper.SellPlayer(player, sellPlayerDTO);
+                }
             }
-            catch
+            catch (Exception ex)
             {
                 ListPlayer(sellPlayerDTO);
             }
