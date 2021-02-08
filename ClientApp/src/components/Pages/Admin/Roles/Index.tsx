@@ -8,9 +8,9 @@ import EditUsers from "./EditUsers";
 
 const Index: FunctionComponent = () => {
   const radioButtons = [
-    { name: "Add role", isActive: true, Component: Add },
+    { name: "Add role", isActive: false, Component: Add },
     { name: "Edit role", isActive: false, Component: Edit },
-    { name: "Edit user's roles", isActive: false, Component: EditUsers },
+    { name: "Edit user's roles", isActive: true, Component: EditUsers },
   ] as RadioButton[];
 
   return (

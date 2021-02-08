@@ -18,7 +18,6 @@ const RadioButtonsContainer: FunctionComponent<RadioButtonsContainerProps> = ({
 
   const handleButtonClicked = (e: MouseEvent<HTMLInputElement>) => {
     e.preventDefault();
-    debugger;
     setButtons([
       ...buttons.map((btn) =>
         btn.name === e.currentTarget.name

@@ -4,7 +4,7 @@ export interface User {
   isConfirmed?: boolean;
   createdDate: Date;
   eaAccounts: EaAccount[];
-  roles?: string[];
+  roles: string[];
 }
 
 export interface EaAccount {

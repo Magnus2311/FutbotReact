@@ -14,10 +14,14 @@
 }
 
 .dropdown-item {
+  padding-left: 12px;
   color: var(--text-clr);
   transition: max-height 0.2s linear, visibility 0.12s linear;
   background-color: var(--form-control-bkg-color);
   z-index: 10000;
+  height: 38px;
+  line-height: 30px;
+  vertical-align: center;
 }
 
 .dropdown-item:hover {

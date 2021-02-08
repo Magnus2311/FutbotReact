@@ -66,7 +66,7 @@ const Dropdown: FunctionComponent<DropdownProps> = ({
             key={item + idx}
             onClick={handleItemClick}
             style={{
-              maxHeight: isDropdownOpen ? "30px" : "0px",
+              maxHeight: isDropdownOpen ? "38px" : "0px",
               visibility: isDropdownOpen ? "visible" : "collapse",
             }}
           >
