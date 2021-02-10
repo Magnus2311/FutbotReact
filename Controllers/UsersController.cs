@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FutbotReact.Helpers.Attributes;
@@ -67,6 +68,14 @@ namespace FutbotReact.Controllers
             await _dbService.UpdateRefreshToken(user);
             HttpContext.Response.Cookies.Delete("access_token");
             HttpContext.Response.Cookies.Delete("refresh_token");
+            return Ok();
+        }
+
+        [HttpPut("updateUserRoles")]
+        [Authorize]
+        public async Task<IActionResult> UpdateUserRoles(User user)
+        {
+            await _dbService.UpdateUserRoles(user);
             return Ok();
         }
 

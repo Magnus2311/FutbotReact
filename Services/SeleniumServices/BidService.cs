@@ -88,7 +88,7 @@ namespace FutbotReact.Services.SeleniumServices
 
                     player.Click();
                     var period = _chromeDriver.FindElementByClassName("subContent").Text;
-                    var isPeriodTooLong = !period.Contains("Minute");
+                    var isPeriodTooLong = period.Contains("Hour") | period.Contains("Day");
                     if (isPeriodTooLong) return false;
 
                     int.TryParse(_chromeDriver.FindElementByClassName("auctionInfo").FindElement(By.ClassName("currency-coins")).Text, out int currentPrice);

@@ -20,11 +20,12 @@ interface EditUsersProps {
     roles: Role[];
   };
   onUsersLoad: () => void;
+  onUserEdited: (user: User) => void;
   visibility: boolean;
 }
 
 const EditUsers: FunctionComponent<EditUsersProps> = (props) => {
-  const { onUsersLoad, visibility } = props;
+  const { onUsersLoad, visibility, onUserEdited } = props;
   const users = props.users.users;
   const roles = props.roles.roles;
   const [selectedUser, setSelectedUser] = useState<User | undefined>();
@@ -56,6 +57,8 @@ const EditUsers: FunctionComponent<EditUsersProps> = (props) => {
 
   const handleBtnClick = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+
+    onUserEdited(selectedUser!);
   };
 
   useEffect(() => onUsersLoad(), []);
@@ -102,6 +105,9 @@ const mapDispatchToProps = (dispatch: any) => {
   return {
     onUsersLoad: () => {
       dispatch(actionCreators.loadUsers());
+    },
+    onUserEdited: (user: User) => {
+      dispatch(actionCreators.updateUserRoles(user));
     },
   };
 };

@@ -24,11 +24,11 @@ namespace FutbotReact.Services.ScheduledServices
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            using var scope = _serviceFactory.CreateScope();
-            var logger = scope.ServiceProvider.GetService<LoggerDbService>();
-            logger.Log("Started rebid player scheduler");
+            // using var scope = _serviceFactory.CreateScope();
+            // var logger = scope.ServiceProvider.GetService<LoggerDbService>();
+            // logger.Log("Started rebid player scheduler");
 
-            _timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromMinutes(5));
+            // _timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromMinutes(1));
 
             return Task.CompletedTask;
         }

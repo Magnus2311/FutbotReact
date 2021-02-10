@@ -11,10 +11,11 @@ import BuyPlayer from "../Trade/BuyPlayer";
 import SellPlayer from "../Trade/SellPlayer";
 import RelistPlayer from "../Trade/RelistPlayer";
 import * as activePlayersActions from "../../../store/activePlayers";
+import * as playersActions from "../../../store/players";
 import ActivePlayers from "../Trade/ActivePlayers";
 import { ApplicationState } from "../../../store";
 import { connect } from "react-redux";
-import { PlayerToBuy } from "../../../interfaces/Models";
+import { Player, PlayerToBuy } from "../../../interfaces/Models";
 import "./Index.scss";
 import RadioButtonsContainer, {
   RadioButton,
@@ -27,13 +28,21 @@ interface MatchParams {
 }
 
 interface Props extends RouteComponentProps<MatchParams> {
-  playersToBuy: PlayerToBuy[];
+  playersToBuy: {
+    playersToBuy: PlayerToBuy[];
+  };
+  players: {
+    players: Player[];
+  };
   onLoadActivePlayers: (eaAccountUsername: string) => void;
+  onLoadPlayers: () => void;
 }
 
 const Index: FunctionComponent<Props> = (props) => {
   const { username } = props.match.params;
-  const { playersToBuy, onLoadActivePlayers } = props;
+  const { onLoadActivePlayers, onLoadPlayers } = props;
+  const { playersToBuy } = props.playersToBuy;
+  const { players } = props.players;
   const [isAdding, setIsAdding] = useState(false);
   const radioButtons = [
     {
@@ -61,7 +70,10 @@ const Index: FunctionComponent<Props> = (props) => {
       },
     },
   ] as RadioButton[];
-  useEffect(() => onLoadActivePlayers(username), []);
+  useEffect(() => {
+    onLoadActivePlayers(username);
+    onLoadPlayers();
+  }, []);
 
   const handleRelistAll = (e: FormEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -127,7 +139,9 @@ const Index: FunctionComponent<Props> = (props) => {
   );
 };
 
-const mapStateToProps = (state: ApplicationState) => state.playersToBuy;
+const mapStateToProps = (state: ApplicationState) => {
+  return { playersToBuy: state.playersToBuy, players: state.players };
+};
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
@@ -135,6 +149,9 @@ const mapDispatchToProps = (dispatch: any) => {
       dispatch(
         activePlayersActions.actionCreators.loadPlayersToBuy(eaAccountUsername)
       );
+    },
+    onLoadPlayers: () => {
+      dispatch(playersActions.actionCreators.onLoadPlayers());
     },
   };
 };

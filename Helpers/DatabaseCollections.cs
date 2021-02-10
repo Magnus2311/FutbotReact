@@ -8,5 +8,6 @@ namespace FutbotReact.Helpers
         public const string ScheduledStarts = "scheduledStarts";
         public const string Roles = "roles";
         public const string RolesLogs = "rolesLogs";
+        public const string Players = "players";
     }
 }

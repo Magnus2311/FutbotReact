@@ -35,7 +35,10 @@ const RadioButtonsContainer: FunctionComponent<RadioButtonsContainerProps> = ({
       >
         {buttons.map((btn) => {
           return (
-            <label className={`btn btn-secondary ${btn.isActive && "active"}`}>
+            <label
+              key={btn.name}
+              className={`btn btn-secondary ${btn.isActive && "active"}`}
+            >
               <input
                 type="radio"
                 name={btn.name}
@@ -48,7 +51,13 @@ const RadioButtonsContainer: FunctionComponent<RadioButtonsContainerProps> = ({
         })}
       </div>
       {buttons.map((btn) => {
-        return <btn.Component {...btn.props} visibility={btn.isActive} />;
+        return (
+          <btn.Component
+            id={btn.name}
+            {...btn.props}
+            visibility={btn.isActive}
+          />
+        );
       })}
     </>
   );

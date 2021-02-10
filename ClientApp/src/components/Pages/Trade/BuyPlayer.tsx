@@ -1,36 +1,45 @@
 import React, {
   ChangeEvent,
+  createRef,
   FormEvent,
   FunctionComponent,
+  MutableRefObject,
+  RefObject,
+  useRef,
   useState,
 } from "react";
-import { BidPlayerDTO } from "../../../interfaces/Models";
+import { connect } from "react-redux";
+import { BidPlayerDTO, Player } from "../../../interfaces/Models";
 import { post } from "../../../services/fetch/fetch";
+import { ApplicationState } from "../../../store";
+import DropdownWithImage from "../../Common/Controls/DropdownWithImage";
 import Switch from "../../Common/Controls/Switch";
 import TextBox from "../../Common/Controls/TextBox";
 
 interface BuyPlayerProps {
-  username: string;
+  player: Player;
   visibility?: boolean;
+  players: Player[];
 }
 
 const emptyBid: BidPlayerDTO = {
-  username: "",
+  player: { id: "0", name: "", rating: 0 },
   maxPrice: 0,
-  name: "",
   isBin: false,
   maxActiveBids: 0,
-  rating: 0,
 };
 
 const BuyPlayer: FunctionComponent<BuyPlayerProps> = ({
-  username,
+  player,
   visibility,
+  players,
 }) => {
   const [bidPlayer, setBidPlayer] = useState({
     ...emptyBid,
-    username,
   });
+
+  let maxPriceRef: RefObject<HTMLInputElement>;
+  maxPriceRef = createRef();
 
   const handleBidPlayerChange = (e: ChangeEvent<HTMLInputElement>) => {
     setBidPlayer({ ...bidPlayer, [e.target.name]: e.target.value });
@@ -45,6 +54,8 @@ const BuyPlayer: FunctionComponent<BuyPlayerProps> = ({
     setBidPlayer({ ...bidPlayer, isBin: !bidPlayer.isBin });
   };
 
+  const handleItemChosen = (player: Player) => {};
+
   return (
     <div
       style={{
@@ -52,17 +63,18 @@ const BuyPlayer: FunctionComponent<BuyPlayerProps> = ({
       }}
     >
       <h4>Bid player</h4>
-      <TextBox
-        name="name"
+      <DropdownWithImage
         placeholder="Enter player name"
-        label="Player name"
-        value={bidPlayer.name}
-        handleChange={handleBidPlayerChange}
+        handleItemChosen={handleItemChosen}
+        players={players}
+        maxPriceRef={maxPriceRef as MutableRefObject<HTMLInputElement>}
+        src="/images/players/fifa21/"
       />
       <TextBox
         name="maxPrice"
         placeholder="Enter max price"
         label="Max price"
+        ref={maxPriceRef}
         value={bidPlayer.maxPrice.toString()}
         handleChange={handleBidPlayerChange}
       />
@@ -71,13 +83,6 @@ const BuyPlayer: FunctionComponent<BuyPlayerProps> = ({
         placeholder="Enter max active bids"
         label="Max active bids"
         value={bidPlayer.maxActiveBids.toString()}
-        handleChange={handleBidPlayerChange}
-      />
-      <TextBox
-        name="rating"
-        placeholder="Rating"
-        label="Rating"
-        value={bidPlayer.rating.toString()}
         handleChange={handleBidPlayerChange}
       />
       <Switch
@@ -92,4 +97,6 @@ const BuyPlayer: FunctionComponent<BuyPlayerProps> = ({
   );
 };
 
-export default BuyPlayer;
+const mapStateToProps = (state: ApplicationState) => state.players;
+
+export default connect(mapStateToProps)(BuyPlayer);

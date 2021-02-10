@@ -43,12 +43,10 @@ export enum SellDuration {
 }
 
 export interface BidPlayerDTO {
-  username: string;
-  name: string;
+  player: Player;
   maxPrice: number;
   maxActiveBids: number;
   isBin: boolean;
-  rating: number;
 }
 
 export interface SellPlayerDTO {
@@ -72,6 +70,12 @@ export interface Role {
   id?: string;
   name: string;
   permissions: string[];
+}
+
+export interface Player {
+  id: string;
+  name: string;
+  rating: number;
 }
 
 //export type {

@@ -47,6 +47,7 @@ namespace FutbotReact
             services.AddTransient<ActivePlayersDbService>();
             services.AddTransient<RebidPlayerService>();
             services.AddTransient<RolesDbService>();
+            services.AddTransient<PlayersDbService>();
         }
 
         public void Configure(IApplicationBuilder app,
