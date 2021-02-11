@@ -1,3 +1,5 @@
+import { ObjectId } from "mongodb";
+
 export interface User {
   username: string;
   password: string;
@@ -47,6 +49,7 @@ export interface BidPlayerDTO {
   maxPrice: number;
   maxActiveBids: number;
   isBin: boolean;
+  username: string;
 }
 
 export interface SellPlayerDTO {

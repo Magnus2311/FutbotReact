@@ -30,10 +30,10 @@ namespace FutbotReact.Services.SeleniumServices
             _chromeDriver.OpenSearchTransferMarket(eaAccount);
 
             var nameInput = _chromeDriver.FindElement(By.ClassName("ut-text-input-control"), 3);
-            nameInput.SendKeys(bidPlayerDTO.Name);
+            nameInput.SendKeys(bidPlayerDTO.Player.Name);
             Thread.Sleep(500);
             var searchedPlayers = _chromeDriver.FindElementByClassName("playerResultsList").FindElements(By.CssSelector("button"));
-            var selectPlayer = searchedPlayers.FirstOrDefault(p => p.FindElement(By.CssSelector(".btn-subtext")).Text == bidPlayerDTO.Rating.ToString());
+            var selectPlayer = searchedPlayers.FirstOrDefault(p => p.FindElement(By.CssSelector(".btn-subtext")).Text == bidPlayerDTO.Player.Rating.ToString());
             selectPlayer.Click();
             Thread.Sleep(1000);
             var priceElements = _chromeDriver.FindElementsByClassName("numericInput");

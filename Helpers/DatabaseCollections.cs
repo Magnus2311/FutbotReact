@@ -9,5 +9,6 @@ namespace FutbotReact.Helpers
         public const string Roles = "roles";
         public const string RolesLogs = "rolesLogs";
         public const string Players = "players";
+        public const string PlayersToBuy = "playersToBuy";
     }
 }

@@ -1,3 +1,4 @@
+import { ObjectId } from "mongodb";
 import React, {
   ChangeEvent,
   createRef,
@@ -5,7 +6,6 @@ import React, {
   FunctionComponent,
   MutableRefObject,
   RefObject,
-  useRef,
   useState,
 } from "react";
 import { connect } from "react-redux";
@@ -17,25 +17,27 @@ import Switch from "../../Common/Controls/Switch";
 import TextBox from "../../Common/Controls/TextBox";
 
 interface BuyPlayerProps {
-  player: Player;
   visibility?: boolean;
   players: Player[];
+  username: string;
 }
 
 const emptyBid: BidPlayerDTO = {
-  player: { id: "0", name: "", rating: 0 },
+  player: { id: "", name: "", rating: 0 },
   maxPrice: 0,
   isBin: false,
   maxActiveBids: 0,
+  username: "",
 };
 
 const BuyPlayer: FunctionComponent<BuyPlayerProps> = ({
-  player,
   visibility,
   players,
+  username,
 }) => {
   const [bidPlayer, setBidPlayer] = useState({
     ...emptyBid,
+    username: username,
   });
 
   let maxPriceRef: RefObject<HTMLInputElement>;
@@ -50,11 +52,13 @@ const BuyPlayer: FunctionComponent<BuyPlayerProps> = ({
     post("/api/bidding", bidPlayer).catch((error) => console.log(error));
   };
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleChange = () => {
     setBidPlayer({ ...bidPlayer, isBin: !bidPlayer.isBin });
   };
 
-  const handleItemChosen = (player: Player) => {};
+  const handleItemChosen = (player: Player) => {
+    setBidPlayer({ ...bidPlayer, player });
+  };
 
   return (
     <div

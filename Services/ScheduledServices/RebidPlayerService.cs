@@ -24,11 +24,11 @@ namespace FutbotReact.Services.ScheduledServices
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            // using var scope = _serviceFactory.CreateScope();
-            // var logger = scope.ServiceProvider.GetService<LoggerDbService>();
-            // logger.Log("Started rebid player scheduler");
+            using var scope = _serviceFactory.CreateScope();
+            var logger = scope.ServiceProvider.GetService<LoggerDbService>();
+            logger.Log("Started rebid player scheduler");
 
-            // _timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromMinutes(1));
+            _timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromMinutes(1));
 
             return Task.CompletedTask;
         }
@@ -51,10 +51,9 @@ namespace FutbotReact.Services.ScheduledServices
                         new BidService(chromeDriver).BidPlayer(new BidPlayerDTO
                         {
                             Username = eaAccount.Username,
-                            Name = player.Name,
+                            Player = player.Player,
                             IsBin = player.IsBin,
                             MaxActiveBids = player.MaxActiveBids,
-                            Rating = player.Rating,
                             MaxPrice = player.MaxPrice
                         }, eaAccount);
                     }

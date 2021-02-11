@@ -1,22 +1,19 @@
+using System.Collections.Generic;
+using FutbotReact.Models.DTOs;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace FutbotReact.Models
+namespace FutbotReact.Models.Mappings
 {
-    public class PlayerToBuy
+    public class PlayerToBuyWithPlayer
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
-        [BsonElement("eaAccountUsername")]
         public string EaAccountUsername { get; set; }
-        [BsonRepresentation(BsonType.ObjectId)]
-        public string Player { get; set; }
-        [BsonElement("isBin")]
+        public Player Player { get; set; }
         public bool IsBin { get; set; }
-        [BsonElement("maxActiveBids")]
         public int MaxActiveBids { get; set; }
-        [BsonElement("maxPrice")]
         public int MaxPrice { get; set; }
     }
 }

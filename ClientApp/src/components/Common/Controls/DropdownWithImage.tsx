@@ -5,7 +5,6 @@ import React, {
   KeyboardEvent,
   MouseEvent,
   MutableRefObject,
-  useRef,
   useState,
 } from "react";
 import { Player } from "../../../interfaces/Models";
@@ -42,6 +41,7 @@ const DropdownWithImage: FunctionComponent<DropdownWithImageProps> = ({
         players.name.toLowerCase().includes(e.currentTarget.value.toLowerCase())
       )
     );
+    debugger;
   };
 
   const handleItemKeyUp = (e: KeyboardEvent<HTMLDivElement>) => {
@@ -55,7 +55,7 @@ const DropdownWithImage: FunctionComponent<DropdownWithImageProps> = ({
       } else if (e.keyCode === 13) {
         elemRefs[currIndex].click();
       } else if (e.keyCode === 9) {
-        maxPriceRef.current.focus();
+        maxPriceRef?.current?.focus();
       } else {
         elemRefs[0].focus();
       }
@@ -63,20 +63,21 @@ const DropdownWithImage: FunctionComponent<DropdownWithImageProps> = ({
   };
 
   const handleItemClick = (e: MouseEvent<HTMLInputElement>) => {
+    debugger;
     const playerClicked = players.filter(
       (player) =>
-        player.id == e.currentTarget.attributes.getNamedItem("data-id")?.value
+        player.id == e.currentTarget.attributes.getNamedItem("data-id")?.value!
     )[0];
     setInputText(playerClicked.name);
     handleItemChosen(playerClicked);
     setTimeout(() => setIsDropdownOpen(false), 50);
-    maxPriceRef.current.focus();
+    maxPriceRef?.current?.focus();
   };
 
   const handleFocus = (e: FocusEvent<HTMLDivElement>) => {
     const playerClicked = players.filter(
       (player) =>
-        player.id == e.currentTarget.attributes.getNamedItem("data-id")?.value
+        player.id == e.currentTarget.attributes.getNamedItem("data-id")?.value!
     )[0];
     setInputText(playerClicked.name);
     handleItemChosen(playerClicked);

@@ -5,6 +5,7 @@ using FutbotReact.Helpers.Attributes;
 using FutbotReact.Models;
 using FutbotReact.Models.Auth;
 using FutbotReact.Models.DTOs;
+using FutbotReact.Models.Mappings;
 using FutbotReact.Services.DbServices;
 using FutbotReact.Services.SeleniumServices;
 using Microsoft.AspNetCore.Mvc;
@@ -31,12 +32,16 @@ namespace FutbotReact.Controllers
             var user = Request.HttpContext.Items["User"] as User;
             var eaAccount = user.EaAccounts.FirstOrDefault(ea => ea.Username == bidPlayer.Username);
 
-            var playerToBuy = new PlayerToBuy(eaAccountUsername: bidPlayer.Username,
-            name: bidPlayer.Name,
-            rating: bidPlayer.Rating,
-            isBin: false,
-            maxActiveBids: bidPlayer.MaxActiveBids,
-            maxPrice: bidPlayer.MaxPrice);
+            var playerToBuy = new PlayerToBuy
+            {
+                EaAccountUsername = bidPlayer.Username,
+                Player = bidPlayer.Player.Id,
+                IsBin = false,
+                MaxActiveBids = bidPlayer.MaxActiveBids,
+                MaxPrice = bidPlayer.MaxPrice,
+
+
+            };
             await _activePlayersDbService.AddPlayerToBuy(playerToBuy);
 
             var chromeDriver = ChromeInstances.Instance.Add(bidPlayer.Username);
